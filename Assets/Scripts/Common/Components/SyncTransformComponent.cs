@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTS.Common
 {
-    public class SyncUpTransformComponent : IComponentData
+    public class SyncTransformComponent : IComponentData
     {
         public GameObject GameObject;
     }

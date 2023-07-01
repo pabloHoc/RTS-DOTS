@@ -1,4 +1,5 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -24,11 +25,17 @@ namespace RTS.Camera
     {
         private float _horizontalSpeed;
         private float3 _horizontalDirection;
-        
+        private NativeReference<float> _horizontalSpeedReference; 
+        private NativeReference<float3> _horizontalDirectionReference; 
+
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<CameraSettingsComponent>();
             state.RequireForUpdate<CameraMovementComponent>();
+            
+            _horizontalSpeedReference = new NativeReference<float>(0f, Allocator.Persistent);
+            _horizontalDirectionReference = new NativeReference<float3>(float3.zero, Allocator.Persistent);
         }
     
         [BurstCompile]
@@ -36,49 +43,85 @@ namespace RTS.Camera
         {
             var camera = SystemAPI.GetSingleton<CameraMovementComponent>();
             var cameraSettings = SystemAPI.GetSingleton<CameraSettingsComponent>();
+            var deltaTime = SystemAPI.Time.DeltaTime;
+
+            var updateCameraRigPositionJob = new UpdateCameraRigPositionJob
+            {
+                Camera = camera,
+                CameraSettings = cameraSettings,
+                DeltaTime = deltaTime,
+                HorizontalSpeed = _horizontalSpeedReference,
+                HorizontalDirection = _horizontalDirectionReference
+            };
+            updateCameraRigPositionJob.Schedule();
             
-            foreach (var (rigTransform, rigLocalToWorld) in SystemAPI.Query<RefRW<LocalTransform>, LocalToWorld>()
-                         .WithAll<CameraRigTag>())
+            var updateCameraPositionJob = new UpdateCameraPositionJob
             {
-                var isMoving = math.length(camera.Movement) > 0.1f;
-
-                // Update horizontal direction and speed
-                if (isMoving)
-                {
-                    _horizontalDirection = camera.Movement.x * rigLocalToWorld.Right +
-                                           camera.Movement.y * rigLocalToWorld.Forward;
-                    _horizontalSpeed += cameraSettings.Acceleration;
-                }
-                else
-                {
-                    _horizontalSpeed -= cameraSettings.Deceleration;
-                }
-
-                // Clamp speed
-                _horizontalSpeed = math.clamp(_horizontalSpeed, 0f, cameraSettings.MaxMovementSpeed);
-
-                // Update position
-                rigTransform.ValueRW.Position += _horizontalDirection * _horizontalSpeed * SystemAPI.Time.DeltaTime;
-
-                // Update Rotation
-                rigTransform.ValueRW.Rotation = quaternion.EulerXYZ(
-                    -camera.Rotation.y * cameraSettings.RotationSpeed,
-                    camera.Rotation.x * cameraSettings.RotationSpeed,
-                    0f);
-            }
-
-            foreach (var cameraTransform in SystemAPI.Query<RefRW<LocalTransform>>()
-                         .WithAll<MainCameraTag>())
-            {
-                // Update Zoom
-                cameraTransform.ValueRW.Position += cameraTransform.ValueRW.Forward() * camera.Zoom * cameraSettings.ZoomSpeed * SystemAPI.Time.DeltaTime;
-            }
+                Camera = camera,
+                CameraSettings = cameraSettings,
+                DeltaTime = deltaTime
+            };
+            updateCameraPositionJob.Schedule();
         }
 
-        
+        [BurstCompile]
         public void OnDestroy(ref SystemState state)
         {
 
+        }
+    }
+
+    [WithAll(typeof(CameraRigTag))]
+    [BurstCompile]
+    public partial struct UpdateCameraRigPositionJob : IJobEntity
+    {
+        public CameraMovementComponent Camera;
+        public CameraSettingsComponent CameraSettings;
+        public float DeltaTime;
+        public NativeReference<float> HorizontalSpeed;
+        public NativeReference<float3> HorizontalDirection;
+        
+        public void Execute(ref LocalTransform transform, in LocalToWorld localToWorld)
+        {
+            var isMoving = math.length(Camera.Movement) > 0.1f;
+
+            // Update horizontal direction and speed
+            if (isMoving)
+            {
+                HorizontalDirection.Value = Camera.Movement.x * localToWorld.Right +
+                                      Camera.Movement.y * localToWorld.Forward;
+                HorizontalSpeed.Value += HorizontalSpeed.Value + CameraSettings.Acceleration;
+            }
+            else
+            {
+                HorizontalSpeed.Value -= CameraSettings.Deceleration;
+            }
+
+            // Clamp speed
+            HorizontalSpeed.Value = math.clamp(HorizontalSpeed.Value, 0f, CameraSettings.MaxMovementSpeed);
+
+            // Update position
+            transform.Position += HorizontalDirection.Value * HorizontalSpeed.Value * DeltaTime;
+
+            // Update Rotation
+            transform.Rotation = quaternion.EulerXYZ(
+                -Camera.Rotation.y * CameraSettings.RotationSpeed,
+                Camera.Rotation.x * CameraSettings.RotationSpeed,
+                0f);
+        }
+    }
+
+    [WithAll(typeof(MainCameraTag))]
+    [BurstCompile]
+    public partial struct UpdateCameraPositionJob : IJobEntity
+    {
+        public CameraMovementComponent Camera;
+        public CameraSettingsComponent CameraSettings;
+        public float DeltaTime;
+        
+        public void Execute(ref LocalTransform transform)
+        {
+            transform.Position += transform.Forward() * Camera.Zoom * CameraSettings.ZoomSpeed * DeltaTime;
         }
     }
 }

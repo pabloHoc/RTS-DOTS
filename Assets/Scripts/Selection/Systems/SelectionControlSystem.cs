@@ -1,3 +1,4 @@
+using RTS.Input;
 using Unity.Burst;
 using Unity.Entities;
 
@@ -8,32 +9,32 @@ namespace RTS.Selection
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<SelectionControlComponent>();
+            state.RequireForUpdate<InputComponent>();
             state.RequireForUpdate<SelectionComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var selectionControl = SystemAPI.GetSingleton<SelectionControlComponent>();
+            var input = SystemAPI.GetSingleton<InputComponent>();
             var selection = SystemAPI.GetSingletonRW<SelectionComponent>();
 
-            if (selectionControl.IsSelecting && !selection.ValueRO.IsActive)
+            if (input.PrimaryActionPressed && !selection.ValueRO.IsActive)
             {
                 SystemAPI.SetSingleton(new SelectionComponent
                 {
-                    StartPosition = selectionControl.CursorPosition,
-                    EndPosition = selectionControl.CursorPosition,
+                    StartPosition = input.CursorWorldPosition,
+                    EndPosition = input.CursorWorldPosition,
                     IsActive = true
                 });
             }
 
             if (selection.ValueRO.IsActive)
             {
-                selection.ValueRW.EndPosition = selectionControl.CursorPosition;
+                selection.ValueRW.EndPosition = input.CursorWorldPosition;
             }
 
-            if (!selectionControl.IsSelecting && selection.ValueRO.IsActive)
+            if (!input.PrimaryActionPressed && selection.ValueRO.IsActive)
             {
                 selection.ValueRW.IsActive = false;
             }

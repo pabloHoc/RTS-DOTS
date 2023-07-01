@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RTS.Input
 {
 
-    public class PlayerInputComponentAuthoring : MonoBehaviour
+    public class InputComponentAuthoring : MonoBehaviour
     {
         [NonSerialized] public bool PrimaryActionPressed;
         [NonSerialized] public bool SecondaryActionPressed;
@@ -15,16 +15,17 @@ namespace RTS.Input
         [NonSerialized] public float2 CameraMovementInput;
         [NonSerialized] public float CameraRotationInput;
         [NonSerialized] public float CameraZoomLevelInput;
-        [NonSerialized] public float2 CursorPosition;
+        [NonSerialized] public float2 CursorScreenPosition;
         [NonSerialized] public float2 CursorDelta;
+        [NonSerialized] public float3 CursorWorldPosition;
 
-        public class PlayerInputComponentBaker : Baker<PlayerInputComponentAuthoring>
+        public class InputComponentBaker : Baker<InputComponentAuthoring>
         {
-            public override void Bake(PlayerInputComponentAuthoring authoring)
+            public override void Bake(InputComponentAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity,
-                    new PlayerInputComponent
+                    new InputComponent
                     {
                         PrimaryActionPressed = authoring.PrimaryActionPressed,
                         SecondaryActionPressed = authoring.SecondaryActionPressed,
@@ -33,8 +34,9 @@ namespace RTS.Input
                         CameraMovementInput = authoring.CameraMovementInput,
                         CameraRotationInput = authoring.CameraRotationInput,
                         CameraZoomLevelInput = authoring.CameraZoomLevelInput,
-                        CursorPosition = authoring.CursorPosition,
-                        CursorDelta = authoring.CursorDelta
+                        CursorScreenPosition = authoring.CursorScreenPosition,
+                        CursorDelta = authoring.CursorDelta,
+                        CursorWorldPosition = authoring.CursorWorldPosition
                     });
             }
         }

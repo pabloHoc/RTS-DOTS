@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace RTS.Input
 {
-    public struct PlayerInputComponent : IComponentData
+    public struct InputComponent : IComponentData
     {
         public bool PrimaryActionPressed;
         public bool SecondaryActionPressed;
@@ -15,7 +15,8 @@ namespace RTS.Input
         public float CameraRotationInput;
         public float CameraZoomLevelInput;
 
-        public float2 CursorPosition;
+        public float2 CursorScreenPosition;
         public float2 CursorDelta;
+        public float3 CursorWorldPosition;
     }
 }

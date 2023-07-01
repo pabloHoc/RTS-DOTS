@@ -1,8 +1,8 @@
 using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace RTS.Selection
 {
@@ -19,7 +19,6 @@ namespace RTS.Selection
         public void OnUpdate(ref SystemState state)
         {
             var selection = SystemAPI.GetSingleton<SelectionComponent>();
-            
             if (!selection.IsActive) return;
 
             var selectionBox = (AABB) new MinMaxAABB
@@ -30,22 +29,14 @@ namespace RTS.Selection
             
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
-
-            foreach (var (transform, entity) in SystemAPI.Query<LocalToWorld>().WithAll<SelectableUnitTag>().WithEntityAccess())
+            
+            var job = new SelectUnitJob
             {
-                ecb.AddComponent<SelectedUnitTag>(entity);
-                
-                Debug.Log($"Min: {selectionBox.Min} | Max: {selectionBox.Max} | Point: {transform.Position}");
+                SelectionBox = selectionBox,
+                Ecb = ecb.AsParallelWriter()
+            };
 
-                if (selectionBox.Contains(transform.Position))
-                {
-                    ecb.AddComponent<SelectedUnitTag>(entity);
-                }
-                else
-                {
-                    ecb.RemoveComponent<SelectedUnitTag>(entity);
-                }
-            }
+            state.Dependency = job.ScheduleParallel(state.Dependency);
         }
 
         private static float3 GetBottomLeftPosition(float3 start, float3 end)
@@ -61,6 +52,26 @@ namespace RTS.Selection
         public void OnDestroy(ref SystemState state)
         {
             
+        }
+    }
+
+    [WithAll(typeof(SelectableUnitTag), typeof(LocalToWorld))]
+    [BurstCompile]
+    public partial struct SelectUnitJob : IJobEntity
+    {
+        [ReadOnly] public AABB SelectionBox; 
+        public EntityCommandBuffer.ParallelWriter Ecb;
+        
+        public void Execute(Entity entity, LocalToWorld transform)
+        {
+            if (SelectionBox.Contains(transform.Position))
+            {
+                Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, true);
+            }
+            else
+            {
+                Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, false);
+            }
         }
     }
 }

@@ -1,5 +1,3 @@
-using RTS.Movement;
-using RTS.Selection;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -10,7 +8,7 @@ using UnityEngine.InputSystem;
 namespace RTS.Input
 {
     [CreateAfter(typeof(BuildPhysicsWorld))]
-    public partial class InputGatheringSystem : SystemBase, InputActions.IPlayerActions
+    public partial class InputSystem : SystemBase, InputActions.IPlayerActions
     {
         private InputActions _inputActions;
 
@@ -41,49 +39,19 @@ namespace RTS.Input
 
         protected override void OnUpdate()
         {
-            _screenToWorldCursorPosition = ScreenToWorldPoint();
-
-            UpdateInputComponent();
-            
-            UpdateSelection();
-            UpdateUnitMovement();
-        }
-
-        private void UpdateInputComponent()
-        {
-            SystemAPI.SetSingleton(new PlayerInputComponent
+            SystemAPI.SetSingleton(new InputComponent
             {
                 PrimaryActionPressed = _primaryActionPressed,
                 SecondaryActionPressed = _secondaryActionPressed,
-                CursorPosition = _cursorPosition,
+                CursorScreenPosition = _cursorPosition,
                 CursorDelta = _cursorDelta,
+                CursorWorldPosition = ScreenToWorldPoint(),
                 DragCameraPressed = _dragCameraPressed,
                 OrbitCameraPressed = _orbitCameraPressed,
                 CameraMovementInput = _cameraMovementInput,
                 CameraRotationInput = _cameraRotationInput,
                 CameraZoomLevelInput = _cameraZoomLevelInput
-            });
-        }
-
-        private void UpdateSelection()
-        {
-            SystemAPI.SetSingleton(new SelectionControlComponent
-            {
-                IsSelecting = _primaryActionPressed,
-                CursorPosition = _screenToWorldCursorPosition
-            });
-        }
-
-        private void UpdateUnitMovement()
-        {
-            if (_secondaryActionPressed)
-            {
-                SystemAPI.SetSingleton(new UnitMoveControlComponent
-                {
-                    MoveUnits = true,
-                    TargetPosition = _screenToWorldCursorPosition
-                });
-            }
+            });            
         }
 
         // Callbacks

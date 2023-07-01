@@ -1,25 +1,26 @@
+using RTS.Input;
 using RTS.Selection;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
 namespace RTS.Movement
 {
-    public partial struct UnitMoveControlSystem : ISystem
+    [BurstCompile]
+    public partial struct UnitControlSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<UnitMoveControlComponent>();
+            state.RequireForUpdate<InputComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var moveControl = SystemAPI.GetSingleton<UnitMoveControlComponent>();
+            var input = SystemAPI.GetSingleton<InputComponent>();
             
-            if (moveControl.MoveUnits)
+            if (input.SecondaryActionPressed)
             {
                 var query = SystemAPI.QueryBuilder().WithAll<SelectedUnitTag, MovableComponent>().Build();
                 var entities = query.ToEntityArray(Allocator.Temp);
@@ -32,14 +33,9 @@ namespace RTS.Movement
                 {
                     SystemAPI.SetComponent(entity, new MoveToComponent
                     {   
-                       TargetPosition = moveControl.TargetPosition
+                       TargetPosition = input.CursorWorldPosition
                     });
                 }
-                
-                SystemAPI.SetSingleton(new UnitMoveControlComponent
-                {
-                    MoveUnits = false
-                });
             }
         }
 
