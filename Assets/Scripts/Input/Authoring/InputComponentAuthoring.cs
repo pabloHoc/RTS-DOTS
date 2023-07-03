@@ -19,6 +19,7 @@ namespace RTS.Input
         [NonSerialized] public float2 CursorScreenPosition;
         [NonSerialized] public float2 CursorDelta;
         [NonSerialized] public float3 CursorWorldPosition;
+        [NonSerialized] public Entity EntityHit;
 
         public class InputComponentBaker : Baker<InputComponentAuthoring>
         {
@@ -38,7 +39,8 @@ namespace RTS.Input
                         CameraZoomLevelInput = authoring.CameraZoomLevelInput,
                         CursorScreenPosition = authoring.CursorScreenPosition,
                         CursorDelta = authoring.CursorDelta,
-                        CursorWorldPosition = authoring.CursorWorldPosition
+                        CursorWorldPosition = authoring.CursorWorldPosition,
+                        EntityHit = authoring.EntityHit
                     });
             }
         }

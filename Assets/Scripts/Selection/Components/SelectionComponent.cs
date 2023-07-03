@@ -9,5 +9,6 @@ namespace RTS.Selection
         public float3 EndPosition;
         public bool IsActive;
         public bool KeepCurrentlySelected;
+        public Entity SelectedEntity;
     }
 }

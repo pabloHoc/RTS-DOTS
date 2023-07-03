@@ -4,6 +4,7 @@ using Unity.Physics;
 using Unity.Physics.Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace RTS.Input
 {
@@ -41,6 +42,8 @@ namespace RTS.Input
 
         protected override void OnUpdate()
         {
+            var raycastHit = GetRaycastHit();
+            
             SystemAPI.SetSingleton(new InputComponent
             {
                 PrimaryActionPressed = _primaryActionPressed,
@@ -48,7 +51,8 @@ namespace RTS.Input
                 SelectMultipleUnitsPressed = _selectMultipleUnitsPressed,
                 CursorScreenPosition = _cursorPosition,
                 CursorDelta = _cursorDelta,
-                CursorWorldPosition = ScreenToWorldPoint(),
+                CursorWorldPosition = raycastHit.Position,
+                EntityHit = raycastHit.Entity,
                 DragCameraPressed = _dragCameraPressed,
                 OrbitCameraPressed = _orbitCameraPressed,
                 CameraMovementInput = _cameraMovementInput,
@@ -111,21 +115,20 @@ namespace RTS.Input
 
         // Helpers
 
-        private float3 ScreenToWorldPoint()
+        private RaycastHit GetRaycastHit()
         {
             if (!UnityEngine.Camera.main)
             {
                 Debug.LogError("Main camera missing!");
             }
 
-            var mousePos = Mouse.current.position.ReadValue();
-            var ray = UnityEngine.Camera.main.ScreenPointToRay(mousePos);
+            var ray = UnityEngine.Camera.main.ScreenPointToRay((Vector2)_cursorPosition);
 
             var hit = Raycast(ray.origin, ray.origin + ray.direction * 100);
-
+            
             // Debug.Log($"Hit Position: {hit.Position} | Hit Entity: {hit.Entity} | Ray Origin: {ray.origin} | Ray Direction: {ray.direction}");
 
-            return hit.Position;
+            return hit;
         }
 
         private Unity.Physics.RaycastHit Raycast(float3 rayFrom, float3 rayTo)

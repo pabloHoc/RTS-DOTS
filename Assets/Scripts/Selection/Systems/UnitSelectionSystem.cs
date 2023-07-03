@@ -19,6 +19,7 @@ namespace RTS.Selection
         public void OnUpdate(ref SystemState state)
         {
             var selection = SystemAPI.GetSingleton<SelectionComponent>();
+
             if (!selection.IsActive) return;
 
             var selectionBox = (AABB) new MinMaxAABB
@@ -29,17 +30,18 @@ namespace RTS.Selection
             
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
-            
-            var job = new SelectUnitJob
+
+            var job = new SelectUnitsJob
             {
                 SelectionBox = selectionBox,
                 Ecb = ecb.AsParallelWriter(),
-                KeepCurrentlySelected = selection.KeepCurrentlySelected
+                KeepCurrentlySelected = selection.KeepCurrentlySelected,
+                SelectedEntity = selection.SelectedEntity
             };
 
             state.Dependency = job.ScheduleParallel(state.Dependency);
         }
-
+        
         private static float3 GetBottomLeftPosition(float3 start, float3 end)
         {
             return new float3(math.min(start.x, end.x), 0, math.min(start.z, end.z));
@@ -58,15 +60,16 @@ namespace RTS.Selection
 
     [WithAll(typeof(SelectableUnitTag), typeof(LocalToWorld))]
     [BurstCompile]
-    public partial struct SelectUnitJob : IJobEntity
+    public partial struct SelectUnitsJob : IJobEntity
     {
         [ReadOnly] public AABB SelectionBox; 
         public EntityCommandBuffer.ParallelWriter Ecb;
         [ReadOnly] public bool KeepCurrentlySelected;
-        
+        public Entity SelectedEntity;
+
         public void Execute(Entity entity, LocalToWorld transform)
         {
-            if (SelectionBox.Contains(transform.Position))
+            if (SelectionBox.Contains(transform.Position) || entity.Equals(SelectedEntity))
             {
                 Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, true);
             }

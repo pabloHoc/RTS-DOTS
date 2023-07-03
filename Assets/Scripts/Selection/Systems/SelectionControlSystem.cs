@@ -1,6 +1,7 @@
 using RTS.Input;
 using Unity.Burst;
 using Unity.Entities;
+using UnityEngine;
 
 namespace RTS.Selection
 {
@@ -18,7 +19,7 @@ namespace RTS.Selection
         {
             var input = SystemAPI.GetSingleton<InputComponent>();
             var selection = SystemAPI.GetSingletonRW<SelectionComponent>();
-
+            
             if (input.PrimaryActionPressed && !selection.ValueRO.IsActive)
             {
                 SystemAPI.SetSingleton(new SelectionComponent
@@ -27,6 +28,7 @@ namespace RTS.Selection
                     EndPosition = input.CursorWorldPosition,
                     IsActive = true,
                     KeepCurrentlySelected = input.SelectMultipleUnitsPressed,
+                    SelectedEntity = input.EntityHit
                 });
             }
 

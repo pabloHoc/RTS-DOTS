@@ -19,5 +19,7 @@ namespace RTS.Input
         public float2 CursorScreenPosition;
         public float2 CursorDelta;
         public float3 CursorWorldPosition;
+        
+        public Entity EntityHit;
     }
 }
