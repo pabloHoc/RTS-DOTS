@@ -7,6 +7,7 @@ namespace RTS.Input
     {
         public bool PrimaryActionPressed;
         public bool SecondaryActionPressed;
+        public bool SelectMultipleUnitsPressed;
         
         public bool OrbitCameraPressed; 
         public bool DragCameraPressed;

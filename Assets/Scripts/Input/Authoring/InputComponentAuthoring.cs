@@ -10,6 +10,7 @@ namespace RTS.Input
     {
         [NonSerialized] public bool PrimaryActionPressed;
         [NonSerialized] public bool SecondaryActionPressed;
+        [NonSerialized] public bool SelectMultipleUnitsPressed;
         [NonSerialized] public bool OrbitCameraPressed;
         [NonSerialized] public bool DragCameraPressed;
         [NonSerialized] public float2 CameraMovementInput;
@@ -29,6 +30,7 @@ namespace RTS.Input
                     {
                         PrimaryActionPressed = authoring.PrimaryActionPressed,
                         SecondaryActionPressed = authoring.SecondaryActionPressed,
+                        SelectMultipleUnitsPressed = authoring.SelectMultipleUnitsPressed,
                         OrbitCameraPressed = !authoring.OrbitCameraPressed,
                         DragCameraPressed = authoring.DragCameraPressed,
                         CameraMovementInput = authoring.CameraMovementInput,

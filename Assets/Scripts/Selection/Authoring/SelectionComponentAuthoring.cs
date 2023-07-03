@@ -10,6 +10,7 @@ namespace RTS.Selection
         [NonSerialized] public float3 StartPosition;
         [NonSerialized] public float3 EndPosition;
         [NonSerialized] public bool IsActive;
+        [NonSerialized] public bool KeepCurrentlySelected;
 
         public class SelectionComponentBaker : Baker<SelectionComponentAuthoring>
         {
@@ -21,7 +22,8 @@ namespace RTS.Selection
                     {
                         StartPosition = authoring.StartPosition, 
                         EndPosition = authoring.EndPosition, 
-                        IsActive = authoring.IsActive
+                        IsActive = authoring.IsActive,
+                        KeepCurrentlySelected = authoring.KeepCurrentlySelected
                     });
             }
         }

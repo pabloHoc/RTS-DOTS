@@ -25,7 +25,8 @@ namespace RTS.Selection
                 {
                     StartPosition = input.CursorWorldPosition,
                     EndPosition = input.CursorWorldPosition,
-                    IsActive = true
+                    IsActive = true,
+                    KeepCurrentlySelected = input.SelectMultipleUnitsPressed,
                 });
             }
 

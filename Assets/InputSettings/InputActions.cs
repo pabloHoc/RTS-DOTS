@@ -107,6 +107,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectMultipleUnits"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c3a9b32-398f-4175-ba1f-5be2ff344739"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -318,6 +327,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""DragCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c96e49c-859e-4732-ba9d-3fdeeceb4996"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""SelectMultipleUnits"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -352,6 +372,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Player_CursorDelta = m_Player.FindAction("CursorDelta", throwIfNotFound: true);
         m_Player_PrimaryAction = m_Player.FindAction("PrimaryAction", throwIfNotFound: true);
         m_Player_SecondaryAction = m_Player.FindAction("SecondaryAction", throwIfNotFound: true);
+        m_Player_SelectMultipleUnits = m_Player.FindAction("SelectMultipleUnits", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -422,6 +443,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CursorDelta;
     private readonly InputAction m_Player_PrimaryAction;
     private readonly InputAction m_Player_SecondaryAction;
+    private readonly InputAction m_Player_SelectMultipleUnits;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -435,6 +457,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @CursorDelta => m_Wrapper.m_Player_CursorDelta;
         public InputAction @PrimaryAction => m_Wrapper.m_Player_PrimaryAction;
         public InputAction @SecondaryAction => m_Wrapper.m_Player_SecondaryAction;
+        public InputAction @SelectMultipleUnits => m_Wrapper.m_Player_SelectMultipleUnits;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -471,6 +494,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @SecondaryAction.started += instance.OnSecondaryAction;
             @SecondaryAction.performed += instance.OnSecondaryAction;
             @SecondaryAction.canceled += instance.OnSecondaryAction;
+            @SelectMultipleUnits.started += instance.OnSelectMultipleUnits;
+            @SelectMultipleUnits.performed += instance.OnSelectMultipleUnits;
+            @SelectMultipleUnits.canceled += instance.OnSelectMultipleUnits;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -502,6 +528,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @SecondaryAction.started -= instance.OnSecondaryAction;
             @SecondaryAction.performed -= instance.OnSecondaryAction;
             @SecondaryAction.canceled -= instance.OnSecondaryAction;
+            @SelectMultipleUnits.started -= instance.OnSelectMultipleUnits;
+            @SelectMultipleUnits.performed -= instance.OnSelectMultipleUnits;
+            @SelectMultipleUnits.canceled -= instance.OnSelectMultipleUnits;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -539,5 +568,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnCursorDelta(InputAction.CallbackContext context);
         void OnPrimaryAction(InputAction.CallbackContext context);
         void OnSecondaryAction(InputAction.CallbackContext context);
+        void OnSelectMultipleUnits(InputAction.CallbackContext context);
     }
 }

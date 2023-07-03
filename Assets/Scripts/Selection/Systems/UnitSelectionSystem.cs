@@ -33,7 +33,8 @@ namespace RTS.Selection
             var job = new SelectUnitJob
             {
                 SelectionBox = selectionBox,
-                Ecb = ecb.AsParallelWriter()
+                Ecb = ecb.AsParallelWriter(),
+                KeepCurrentlySelected = selection.KeepCurrentlySelected
             };
 
             state.Dependency = job.ScheduleParallel(state.Dependency);
@@ -61,6 +62,7 @@ namespace RTS.Selection
     {
         [ReadOnly] public AABB SelectionBox; 
         public EntityCommandBuffer.ParallelWriter Ecb;
+        [ReadOnly] public bool KeepCurrentlySelected;
         
         public void Execute(Entity entity, LocalToWorld transform)
         {
@@ -68,7 +70,7 @@ namespace RTS.Selection
             {
                 Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, true);
             }
-            else
+            else if (!KeepCurrentlySelected)
             {
                 Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, false);
             }

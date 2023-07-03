@@ -15,6 +15,8 @@ namespace RTS.Input
         private bool _primaryActionPressed;
         private bool _secondaryActionPressed;
 
+        private bool _selectMultipleUnitsPressed;
+        
         private float2 _cursorPosition;
         private float3 _screenToWorldCursorPosition;
         private float2 _cursorDelta;
@@ -43,6 +45,7 @@ namespace RTS.Input
             {
                 PrimaryActionPressed = _primaryActionPressed,
                 SecondaryActionPressed = _secondaryActionPressed,
+                SelectMultipleUnitsPressed = _selectMultipleUnitsPressed,
                 CursorScreenPosition = _cursorPosition,
                 CursorDelta = _cursorDelta,
                 CursorWorldPosition = ScreenToWorldPoint(),
@@ -99,6 +102,11 @@ namespace RTS.Input
         public void OnSecondaryAction(InputAction.CallbackContext context)
         {
             _secondaryActionPressed = context.performed;
+        }
+
+        public void OnSelectMultipleUnits(InputAction.CallbackContext context)
+        {
+            _selectMultipleUnitsPressed = context.performed;
         }
 
         // Helpers

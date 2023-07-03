@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectMultipleUnits",
+                    "type": "Button",
+                    "id": "6c3a9b32-398f-4175-ba1f-5be2ff344739",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -296,6 +305,17 @@
                     "action": "DragCamera",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0c96e49c-859e-4732-ba9d-3fdeeceb4996",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "SelectMultipleUnits",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
