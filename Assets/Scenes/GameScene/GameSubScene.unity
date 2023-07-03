@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 73539300}
   - component: {fileID: 73539299}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: Unit (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,8 +295,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121388330}
-  m_LocalRotation: {x: 0, y: -0.51413596, z: 0, w: 0.85770875}
-  m_LocalPosition: {x: 11.530043, y: -0.2762247, z: -1.4270571}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.4302733, y: -0.6327202, z: 8.76205}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -436,8 +436,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617526646}
-  m_LocalRotation: {x: 0.255305, y: 0.1586557, z: -0.042511933, w: 0.95280665}
-  m_LocalPosition: {x: -2.1506305, y: 6.7357903, z: -11.301311}
+  m_LocalRotation: {x: 0.25530505, y: 0.15865575, z: -0.042511947, w: 0.9528066}
+  m_LocalPosition: {x: -2.1506321, y: 6.7357903, z: -11.30131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -644,8 +644,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 787057465}
   - {fileID: 774953828}
+  - {fileID: 787057465}
   - {fileID: 73539298}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 787057468}
   - component: {fileID: 787057469}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
