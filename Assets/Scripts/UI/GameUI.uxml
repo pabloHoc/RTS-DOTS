@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:GroupBox style="height: 58px; width: 1006px; flex-direction: column; max-width: 100%; min-width: 100%; padding-left: 0; margin-left: 0; margin-right: 0; position: absolute; bottom: 0;">
+        <ui:Button text="Build" display-tooltip-when-elided="true" name="BuildButton" style="width: 102px; -unity-text-align: middle-center; bottom: auto;" />
+    </ui:GroupBox>
+</ui:UXML>

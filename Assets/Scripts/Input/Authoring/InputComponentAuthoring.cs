@@ -20,6 +20,7 @@ namespace RTS.Input
         [NonSerialized] public float2 CursorDelta;
         [NonSerialized] public float3 CursorWorldPosition;
         [NonSerialized] public Entity EntityHit;
+        [NonSerialized] public bool CancelActionPressed;
 
         public class InputComponentBaker : Baker<InputComponentAuthoring>
         {
@@ -40,7 +41,8 @@ namespace RTS.Input
                         CursorScreenPosition = authoring.CursorScreenPosition,
                         CursorDelta = authoring.CursorDelta,
                         CursorWorldPosition = authoring.CursorWorldPosition,
-                        EntityHit = authoring.EntityHit
+                        EntityHit = authoring.EntityHit,
+                        CancelActionPressed = authoring.CancelActionPressed
                     });
             }
         }

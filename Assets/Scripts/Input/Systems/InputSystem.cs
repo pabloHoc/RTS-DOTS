@@ -8,6 +8,7 @@ using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace RTS.Input
 {
+    // TODO: maybe this should be a singleton and we should have a system that reads from it
     [CreateAfter(typeof(BuildPhysicsWorld))]
     public partial class InputSystem : SystemBase, InputActions.IPlayerActions
     {
@@ -30,15 +31,22 @@ namespace RTS.Input
         private float _cameraRotationInput;
         private float _cameraZoomLevelInput;
 
+        private bool _cancelActionPressed;
+
         protected override void OnCreate()
         {
             _inputActions = new InputActions();
             _inputActions.Player.SetCallbacks(this);
         }
 
-        protected override void OnStartRunning() => _inputActions.Enable();
+        protected override void OnStartRunning() {
+            _inputActions.Enable();
+        }
 
-        protected override void OnStopRunning() => _inputActions.Disable();
+        protected override void OnStopRunning()
+        {
+            _inputActions.Disable();
+        } 
 
         protected override void OnUpdate()
         {
@@ -57,7 +65,8 @@ namespace RTS.Input
                 OrbitCameraPressed = _orbitCameraPressed,
                 CameraMovementInput = _cameraMovementInput,
                 CameraRotationInput = _cameraRotationInput,
-                CameraZoomLevelInput = _cameraZoomLevelInput
+                CameraZoomLevelInput = _cameraZoomLevelInput,
+                CancelActionPressed = _cancelActionPressed
             });            
         }
 
@@ -111,6 +120,11 @@ namespace RTS.Input
         public void OnSelectMultipleUnits(InputAction.CallbackContext context)
         {
             _selectMultipleUnitsPressed = context.performed;
+        }
+
+        public void OnCancelAction(InputAction.CallbackContext context)
+        {
+            _cancelActionPressed = context.performed;
         }
 
         // Helpers

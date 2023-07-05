@@ -21,5 +21,7 @@ namespace RTS.Input
         public float3 CursorWorldPosition;
         
         public Entity EntityHit;
+
+        public bool CancelActionPressed;
     }
 }

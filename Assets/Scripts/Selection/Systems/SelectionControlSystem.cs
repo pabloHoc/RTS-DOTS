@@ -1,3 +1,5 @@
+using RTS.Building;
+using RTS.GameState;
 using RTS.Input;
 using Unity.Burst;
 using Unity.Entities;
@@ -10,6 +12,7 @@ namespace RTS.Selection
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<InputComponent>();
             state.RequireForUpdate<SelectionComponent>();
         }
@@ -17,6 +20,14 @@ namespace RTS.Selection
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            // There's some duplication here
+            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
+
+            if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
+            {
+                return;
+            }
+            
             var input = SystemAPI.GetSingleton<InputComponent>();
             var selection = SystemAPI.GetSingletonRW<SelectionComponent>();
             

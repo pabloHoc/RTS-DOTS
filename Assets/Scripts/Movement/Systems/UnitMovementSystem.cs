@@ -1,3 +1,4 @@
+using RTS.Camera;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -13,6 +14,7 @@ namespace RTS.Movement
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<MainCameraTag>();
             state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         }
 

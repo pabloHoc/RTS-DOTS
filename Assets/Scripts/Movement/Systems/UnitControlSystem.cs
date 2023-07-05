@@ -1,3 +1,5 @@
+using RTS.Building;
+using RTS.GameState;
 using RTS.Input;
 using RTS.Selection;
 using Unity.Burst;
@@ -12,12 +14,20 @@ namespace RTS.Movement
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<InputComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
+
+            if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
+            {
+                return;
+            }
+            
             var input = SystemAPI.GetSingleton<InputComponent>();
             
             if (input.SecondaryActionPressed)
