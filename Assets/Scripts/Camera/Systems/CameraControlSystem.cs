@@ -52,7 +52,7 @@ namespace RTS.Camera
         {
             _cameraRotation.x += input.CameraRotationInput;
             
-            if (input.OrbitCameraPressed)
+            if (input.IsOrbitCameraPressed)
             {
                 _cameraRotation += input.CursorDelta;
             }
@@ -86,7 +86,7 @@ namespace RTS.Camera
             }
 
             // Drag movement overrides previous movement
-            if (input.DragCameraPressed)
+            if (input.IsDragCameraPressed)
             {
                 _cameraMovement = -input.CursorDelta * cameraSettings.DragSpeed;
             }
@@ -94,7 +94,7 @@ namespace RTS.Camera
         
         private void HandleCameraZoom(InputComponent input)
         {
-            _cameraZoomLevel = input.CameraZoomLevelInput;
+            _cameraZoomLevel = input.ScrollAmount;
         }
 
         

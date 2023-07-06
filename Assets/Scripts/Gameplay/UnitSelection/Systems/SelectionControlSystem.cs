@@ -31,14 +31,14 @@ namespace RTS.Gameplay.UnitSelection
             var input = SystemAPI.GetSingleton<InputComponent>();
             var selection = SystemAPI.GetSingletonRW<SelectionComponent>();
             
-            if (input.PrimaryActionPressed && !selection.ValueRO.IsActive)
+            if (input.IsPrimaryActionPressed && !selection.ValueRO.IsActive)
             {
                 SystemAPI.SetSingleton(new SelectionComponent
                 {
                     StartPosition = input.CursorWorldPosition,
                     EndPosition = input.CursorWorldPosition,
                     IsActive = true,
-                    KeepCurrentlySelected = input.SelectMultipleUnitsPressed,
+                    KeepCurrentlySelected = input.IsSelectMultipleUnitsPressed,
                     SelectedEntity = input.EntityHit
                 });
             }
@@ -48,7 +48,7 @@ namespace RTS.Gameplay.UnitSelection
                 selection.ValueRW.EndPosition = input.CursorWorldPosition;
             }
 
-            if (!input.PrimaryActionPressed && selection.ValueRO.IsActive)
+            if (!input.IsPrimaryActionPressed && selection.ValueRO.IsActive)
             {
                 selection.ValueRW.IsActive = false;
             }

@@ -43,7 +43,7 @@ namespace RTS.Gameplay.Building
                 var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
                 var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
-                _currentBuildingRotation += input.CameraZoomLevelInput * 2f;
+                _currentBuildingRotation += input.ScrollAmount * 2f;
                 
                 var job = new BuildBuildingJob
                 {
@@ -51,11 +51,11 @@ namespace RTS.Gameplay.Building
                     Building = buildingReferences.SomeBuilding,
                     BuildingPosition = input.CursorWorldPosition,
                     BuildingRotation = _currentBuildingRotation,
-                    BuildBuilding = input.PrimaryActionPressed,
-                    CancelBuilding = input.CancelActionPressed
+                    BuildBuilding = input.IsPrimaryActionPressed,
+                    CancelBuilding = input.IsCancelActionPressed
                 };
 
-                if (input.CancelActionPressed)
+                if (input.IsCancelActionPressed)
                 {
                     SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, false);
                 }

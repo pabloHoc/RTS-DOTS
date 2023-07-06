@@ -8,19 +8,19 @@ namespace RTS.Input
 
     public class InputComponentAuthoring : MonoBehaviour
     {
-        [NonSerialized] public bool PrimaryActionPressed;
-        [NonSerialized] public bool SecondaryActionPressed;
-        [NonSerialized] public bool SelectMultipleUnitsPressed;
-        [NonSerialized] public bool OrbitCameraPressed;
-        [NonSerialized] public bool DragCameraPressed;
+        [NonSerialized] public bool IsPrimaryActionPressed;
+        [NonSerialized] public bool IsSecondaryActionPressed;
+        [NonSerialized] public bool IsSelectMultipleUnitsPressed;
+        [NonSerialized] public bool IsOrbitCameraPressed;
+        [NonSerialized] public bool IsDragCameraPressed;
         [NonSerialized] public float2 CameraMovementInput;
         [NonSerialized] public float CameraRotationInput;
-        [NonSerialized] public float CameraZoomLevelInput;
         [NonSerialized] public float2 CursorScreenPosition;
         [NonSerialized] public float2 CursorDelta;
         [NonSerialized] public float3 CursorWorldPosition;
+        [NonSerialized] public float ScrollAmount;
         [NonSerialized] public Entity EntityHit;
-        [NonSerialized] public bool CancelActionPressed;
+        [NonSerialized] public bool IsCancelActionPressed;
 
         public class InputComponentBaker : Baker<InputComponentAuthoring>
         {
@@ -30,19 +30,19 @@ namespace RTS.Input
                 AddComponent(entity,
                     new InputComponent
                     {
-                        PrimaryActionPressed = authoring.PrimaryActionPressed,
-                        SecondaryActionPressed = authoring.SecondaryActionPressed,
-                        SelectMultipleUnitsPressed = authoring.SelectMultipleUnitsPressed,
-                        OrbitCameraPressed = !authoring.OrbitCameraPressed,
-                        DragCameraPressed = authoring.DragCameraPressed,
+                        IsPrimaryActionPressed = authoring.IsPrimaryActionPressed,
+                        IsSecondaryActionPressed = authoring.IsSecondaryActionPressed,
+                        IsSelectMultipleUnitsPressed = authoring.IsSelectMultipleUnitsPressed,
+                        IsOrbitCameraPressed = !authoring.IsOrbitCameraPressed,
+                        IsDragCameraPressed = authoring.IsDragCameraPressed,
                         CameraMovementInput = authoring.CameraMovementInput,
                         CameraRotationInput = authoring.CameraRotationInput,
-                        CameraZoomLevelInput = authoring.CameraZoomLevelInput,
+                        ScrollAmount = authoring.ScrollAmount,
                         CursorScreenPosition = authoring.CursorScreenPosition,
                         CursorDelta = authoring.CursorDelta,
                         CursorWorldPosition = authoring.CursorWorldPosition,
                         EntityHit = authoring.EntityHit,
-                        CancelActionPressed = authoring.CancelActionPressed
+                        IsCancelActionPressed = authoring.IsCancelActionPressed
                     });
             }
         }

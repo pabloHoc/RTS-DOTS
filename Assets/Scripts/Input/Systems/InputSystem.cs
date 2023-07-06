@@ -10,33 +10,13 @@ namespace RTS.Input
 {
     // TODO: maybe this should be a singleton and we should have a system that reads from it
     [CreateAfter(typeof(BuildPhysicsWorld))]
-    public partial class InputSystem : SystemBase, InputActions.IPlayerActions
+    public partial class InputSystem : SystemBase
     {
         private InputActions _inputActions;
-
-        private bool _primaryActionPressed;
-        private bool _secondaryActionPressed;
-
-        private bool _selectMultipleUnitsPressed;
-        
-        private float2 _cursorPosition;
-        private float3 _screenToWorldCursorPosition;
-        private float2 _cursorDelta;
-
-        private bool _orbitCameraPressed;
-        private bool _dragCameraPressed;
-        
-        private float2 _cameraMovementInput;
-        private float2 _cameraEdgeMovementInput;
-        private float _cameraRotationInput;
-        private float _cameraZoomLevelInput;
-
-        private bool _cancelActionPressed;
 
         protected override void OnCreate()
         {
             _inputActions = new InputActions();
-            _inputActions.Player.SetCallbacks(this);
         }
 
         protected override void OnStartRunning() {
@@ -50,102 +30,44 @@ namespace RTS.Input
 
         protected override void OnUpdate()
         {
-            var raycastHit = GetRaycastHit();
+            var cursorPosition = _inputActions.Player.CursorPosition.ReadValue<Vector2>();
+            var raycastHit = GetRaycastHit(cursorPosition);
             
             SystemAPI.SetSingleton(new InputComponent
             {
-                PrimaryActionPressed = _inputActions.Player.PrimaryAction.WasPressedThisFrame(),
-                SecondaryActionPressed = _secondaryActionPressed,
-                SelectMultipleUnitsPressed = _selectMultipleUnitsPressed,
-                CursorScreenPosition = _cursorPosition,
-                CursorDelta = _cursorDelta,
+                IsPrimaryActionPressed = _inputActions.Player.PrimaryAction.WasPressedThisFrame(),
+                IsSecondaryActionPressed = _inputActions.Player.SecondaryAction.WasPressedThisFrame(),
+                IsSelectMultipleUnitsPressed = _inputActions.Player.SelectMultipleUnits.WasPressedThisFrame(),
+                CursorScreenPosition = cursorPosition,
+                CursorDelta = _inputActions.Player.CursorDelta.ReadValue<Vector2>(),
                 CursorWorldPosition = raycastHit.Position,
                 EntityHit = raycastHit.Entity,
-                DragCameraPressed = _dragCameraPressed,
-                OrbitCameraPressed = _orbitCameraPressed,
-                CameraMovementInput = _cameraMovementInput,
-                CameraRotationInput = _cameraRotationInput,
-                CameraZoomLevelInput = _cameraZoomLevelInput,
-                CancelActionPressed = _cancelActionPressed
+                IsDragCameraPressed = _inputActions.Player.DragCamera.IsPressed(),
+                IsOrbitCameraPressed = _inputActions.Player.OrbitCamera.IsPressed(),
+                CameraMovementInput = _inputActions.Player.MoveCamera.ReadValue<Vector2>(),
+                CameraRotationInput = _inputActions.Player.RotateCamera.ReadValue<float>(),
+                ScrollAmount = _inputActions.Player.Zoom.ReadValue<Vector2>().y / 100f,
+                IsCancelActionPressed = _inputActions.Player.CancelAction.WasPressedThisFrame()
             });            
-        }
-
-        // Callbacks
-
-        public void OnMoveCamera(InputAction.CallbackContext context)
-        {
-            _cameraMovementInput = context.ReadValue<Vector2>();
-        }
-
-        public void OnRotateCamera(InputAction.CallbackContext context)
-        {
-            _cameraRotationInput = context.ReadValue<float>();
-        }
-
-        public void OnZoom(InputAction.CallbackContext context)
-        {
-            _cameraZoomLevelInput = context.ReadValue<Vector2>().y / 100f;
-        }
-
-        public void OnOrbitCamera(InputAction.CallbackContext context)
-        {
-            _orbitCameraPressed = context.performed;
-        }
-
-        public void OnCursorPosition(InputAction.CallbackContext context)
-        {
-            _cursorPosition = context.ReadValue<Vector2>();
-        }
-
-        public void OnCursorDelta(InputAction.CallbackContext context)
-        {
-            _cursorDelta = context.ReadValue<Vector2>();
-        }
-
-        public void OnDragCamera(InputAction.CallbackContext context)
-        {
-            _dragCameraPressed = context.performed;
-        }
-
-        public void OnPrimaryAction(InputAction.CallbackContext context)
-        {
-            _primaryActionPressed = context.performed;
-        }
-
-        public void OnSecondaryAction(InputAction.CallbackContext context)
-        {
-            _secondaryActionPressed = context.performed;
-        }
-
-        public void OnSelectMultipleUnits(InputAction.CallbackContext context)
-        {
-            _selectMultipleUnitsPressed = context.performed;
-        }
-
-        public void OnCancelAction(InputAction.CallbackContext context)
-        {
-            _cancelActionPressed = context.performed;
         }
 
         // Helpers
 
-        private RaycastHit GetRaycastHit()
+        private RaycastHit GetRaycastHit(Vector2 point)
         {
             if (!UnityEngine.Camera.main)
             {
                 Debug.LogError("Main camera missing!");
             }
 
-            var ray = UnityEngine.Camera.main.ScreenPointToRay((Vector2)_cursorPosition);
+            var ray = UnityEngine.Camera.main.ScreenPointToRay(point);
 
             var hit = Raycast(ray.origin, ray.origin + ray.direction * 100);
             
-            // Debug.Log($"Hit Position: {hit.Position} | Hit Entity: {hit.Entity} | Ray Origin: {ray.origin} | Ray Direction: {ray.direction}");
-
             return hit;
         }
 
-        private Unity.Physics.RaycastHit Raycast(float3 rayFrom, float3 rayTo)
+        private RaycastHit Raycast(float3 rayFrom, float3 rayTo)
         {
             var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
 

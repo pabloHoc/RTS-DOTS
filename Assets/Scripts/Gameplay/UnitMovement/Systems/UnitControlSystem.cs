@@ -30,7 +30,7 @@ namespace RTS.Gameplay.UnitMovement
             
             var input = SystemAPI.GetSingleton<InputComponent>();
             
-            if (input.SecondaryActionPressed)
+            if (input.IsSecondaryActionPressed)
             {
                 var query = SystemAPI.QueryBuilder().WithAll<SelectedUnitTag, MovableComponent>().Build();
                 var entities = query.ToEntityArray(Allocator.Temp);
