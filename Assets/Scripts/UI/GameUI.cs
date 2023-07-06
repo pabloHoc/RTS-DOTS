@@ -28,6 +28,7 @@ namespace RTS.UI
             var uiDocument = GetComponent<UIDocument>();
 
             var buildButton = uiDocument.rootVisualElement.Q<Button>("BuildButton");
+            
             buildButton.clicked += HandleBuildButtonClicked;
 
             // buildButton.clickable.activators.Clear(); // Needed to register mouse events, otherwise they get eaten by clickable
@@ -38,6 +39,7 @@ namespace RTS.UI
 
         private void HandleBuildButtonClicked()
         {
+            Debug.Log("Clicked");
             BuildButtonClicked = true;
         }
 

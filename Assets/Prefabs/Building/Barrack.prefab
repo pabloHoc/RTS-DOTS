@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BuildingName: Barrack
   BuildingTime: 5
 --- !u!114 &446723042078610679
 MonoBehaviour:

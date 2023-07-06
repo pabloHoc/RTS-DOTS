@@ -1,3 +1,5 @@
+using RTS.Building;
+using RTS.GameState;
 using RTS.Input;
 using Unity.Burst;
 using Unity.Entities;
@@ -12,10 +14,12 @@ namespace RTS.Camera
         private float2 _cameraMovement;
         private float2 _cameraRotation;
         private float2 _cameraEdgeMovement;
+        private float _cameraZoomLevel;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<CameraSettingsComponent>();
             state.RequireForUpdate<InputComponent>();
         }
@@ -24,14 +28,22 @@ namespace RTS.Camera
         public void OnUpdate(ref SystemState state)
         {
             var input = SystemAPI.GetSingleton<InputComponent>();
+            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
+
 
             if (!IsCursorInsideScreen(input.CursorScreenPosition)) return;
 
             HandleCameraHorizontalMovement(input);
             HandleCameraRotation(input);
-            UpdateCameraMovement(input);
-        }
 
+            if (!SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
+            {
+                HandleCameraZoom(input);
+            }
+            
+            UpdateCameraMovement();
+        }
+        
         private static bool IsCursorInsideScreen(float2 cursorPosition) =>
             cursorPosition.x < Screen.width && cursorPosition.x > 0 && cursorPosition.y < Screen.height &&
             cursorPosition.y > 0;
@@ -80,13 +92,19 @@ namespace RTS.Camera
             }
         }
         
-        private void UpdateCameraMovement(InputComponent input)
+        private void HandleCameraZoom(InputComponent input)
+        {
+            _cameraZoomLevel = input.CameraZoomLevelInput;
+        }
+
+        
+        private void UpdateCameraMovement()
         {
             SystemAPI.SetSingleton(new CameraMovementComponent
             {
                 Movement = _cameraMovement,
                 Rotation = _cameraRotation,
-                Zoom = input.CameraZoomLevelInput
+                Zoom = _cameraZoomLevel
             });
         }
 

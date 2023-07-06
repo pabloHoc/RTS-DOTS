@@ -1,4 +1,4 @@
-using RTS.Building;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
@@ -13,7 +13,10 @@ namespace RTS.Gameplay.Building
             public override void Bake(BuildingComponentAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new BuildingComponent { BuildingTime = authoring.BuildingTime });
+                AddComponent(entity, new BuildingComponent
+                {
+                    BuildingTime = authoring.BuildingTime
+                });
             }
         }
     }
