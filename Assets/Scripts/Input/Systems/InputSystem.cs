@@ -1,4 +1,5 @@
 using RTS.SystemGroups;
+using RTS.UI;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -32,6 +33,11 @@ namespace RTS.Input
 
         protected override void OnUpdate()
         {
+            if (GameUI.Instance.IsMouseOverUI)
+            {
+                return;
+            }
+            
             var cursorPosition = _inputActions.Player.CursorPosition.ReadValue<Vector2>();
             var raycastHit = GetRaycastHit(cursorPosition);
             

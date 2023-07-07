@@ -10,6 +10,8 @@ namespace RTS.UI
 
         public bool BuildButtonClicked;
         public int BuildingIndex;
+
+        public bool IsMouseOverUI;
         
         private void Awake() 
         { 
@@ -28,6 +30,8 @@ namespace RTS.UI
             var uiDocument = GetComponent<UIDocument>();
             var buildingBox = uiDocument.rootVisualElement.Q<GroupBox>("BuildingBox");
             
+            uiDocument.rootVisualElement.RegisterCallback<MouseEnterEvent>(HandleMouseEnterUI);
+            uiDocument.rootVisualElement.RegisterCallback<MouseLeaveEvent>(HandleMouseLeaveUI);
             // Get building data
 
             var buildingsData = GameObject.Find("BuildingConfig")
@@ -47,6 +51,16 @@ namespace RTS.UI
                 buildingButton.clicked += () => HandleBuildButtonClicked(i1);
                 buildingBox.Add(buildingButton);
             }
+        }
+
+        private void HandleMouseLeaveUI(MouseLeaveEvent evt)
+        {
+            IsMouseOverUI = false;
+        }
+
+        private void HandleMouseEnterUI(MouseEnterEvent evt)
+        {
+            IsMouseOverUI = true;
         }
 
         private void HandleBuildButtonClicked(int i)
