@@ -4,7 +4,6 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace RTS.Input
@@ -18,6 +17,7 @@ namespace RTS.Input
 
         protected override void OnCreate()
         {
+            RequireForUpdate<InputComponent>();
             _inputActions = new InputActions();
         }
 
