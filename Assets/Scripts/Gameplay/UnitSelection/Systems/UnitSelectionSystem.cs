@@ -1,5 +1,6 @@
 using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.Gameplay.UnitSelection.Tags;
+using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -8,6 +9,7 @@ using Unity.Transforms;
 
 namespace RTS.Gameplay.UnitSelection
 {
+    [UpdateInGroup(typeof(GameplaySystemGroup))]
     public partial struct UnitSelectionSystem : ISystem
     {
         [BurstCompile]

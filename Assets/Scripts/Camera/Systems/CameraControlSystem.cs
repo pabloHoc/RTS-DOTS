@@ -1,6 +1,7 @@
 using RTS.Building;
 using RTS.GameState;
 using RTS.Input;
+using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -8,6 +9,8 @@ using UnityEngine;
 
 namespace RTS.Camera
 {
+    [UpdateInGroup(typeof(InputSystemGroup))]
+    [UpdateAfter(typeof(InputSystem))]
     [BurstCompile]
     public partial struct CameraControlSystem : ISystem
     {

@@ -1,3 +1,4 @@
+using RTS.SystemGroups;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -10,6 +11,7 @@ namespace RTS.Input
 {
     // TODO: maybe this should be a singleton and we should have a system that reads from it
     [CreateAfter(typeof(BuildPhysicsWorld))]
+    [UpdateInGroup(typeof(InputSystemGroup))]
     public partial class InputSystem : SystemBase
     {
         private InputActions _inputActions;

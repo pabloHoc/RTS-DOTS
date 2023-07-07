@@ -2,11 +2,14 @@ using RTS.Building;
 using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.GameState;
 using RTS.Input;
+using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
 
 namespace RTS.Gameplay.UnitSelection
 {
+    [UpdateInGroup(typeof(InputSystemGroup))]
+    [UpdateAfter(typeof(InputSystem))]
     public partial struct SelectionControlSystem : ISystem
     {
         [BurstCompile]

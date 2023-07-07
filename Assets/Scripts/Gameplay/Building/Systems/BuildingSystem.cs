@@ -1,6 +1,7 @@
 using RTS.Building;
 using RTS.GameState;
 using RTS.Input;
+using RTS.SystemGroups;
 using RTS.UI;
 using Unity.Burst;
 using Unity.Entities;
@@ -11,6 +12,7 @@ using UnityEngine;
 
 namespace RTS.Gameplay.Building
 {
+    [UpdateInGroup(typeof(GameplaySystemGroup))]
     public partial struct BuildingSystem : ISystem
     {
         private float _currentBuildingRotation;

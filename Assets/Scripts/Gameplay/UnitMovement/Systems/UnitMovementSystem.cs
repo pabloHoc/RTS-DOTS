@@ -1,4 +1,5 @@
 using RTS.Camera;
+using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -8,6 +9,7 @@ using Unity.Transforms;
 
 namespace RTS.Gameplay.UnitMovement
 {
+    [UpdateInGroup(typeof(GameplaySystemGroup))]
     [BurstCompile]
     public partial struct UnitMovementSystem : ISystem
     {

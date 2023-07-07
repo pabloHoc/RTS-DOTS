@@ -2,12 +2,15 @@ using RTS.Building;
 using RTS.Gameplay.UnitSelection.Tags;
 using RTS.GameState;
 using RTS.Input;
+using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
 namespace RTS.Gameplay.UnitMovement
 {
+    [UpdateInGroup(typeof(InputSystemGroup))]
+    [UpdateAfter(typeof(InputSystem))]
     [BurstCompile]
     public partial struct UnitControlSystem : ISystem
     {
