@@ -11,7 +11,7 @@ namespace RTS.Gameplay.Building
             public override void Bake(BuildingPositioningTagAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new BuildingPositioning());
+                AddComponent(entity, new BuildingPositioningTag());
             }
         }
     }

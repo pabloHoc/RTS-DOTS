@@ -492,7 +492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121388330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4400216, y: 0, z: 13.5206375}
+  m_LocalPosition: {x: 1.4400216, y: 0, z: 13.583336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -588,7 +588,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617526646}
-  m_LocalRotation: {x: 0.25530502, y: 0.15865566, z: -0.042511914, w: 0.9528066}
+  m_LocalRotation: {x: 0.25530502, y: 0.15865566, z: -0.04251188, w: 0.95280665}
   m_LocalPosition: {x: -2.8207333, y: 7.9296646, z: -13.257583}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -874,7 +874,7 @@ GameObject:
   m_Component:
   - component: {fileID: 779347393}
   m_Layer: 0
-  m_Name: Controllers
+  m_Name: Configs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1282,6 +1282,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BuildingsData:
-  - Name: asd
+  - Name: House
     Prefab: {fileID: 4155165053055170188, guid: b026dd603bca44db28e226cdf1da66fa,
+      type: 3}
+  - Name: Barrack
+    Prefab: {fileID: 4643711615907867271, guid: ecc544369cc0a4f5cb98662a6c4a9cff,
       type: 3}

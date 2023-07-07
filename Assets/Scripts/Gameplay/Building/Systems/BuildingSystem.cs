@@ -22,7 +22,6 @@ namespace RTS.Gameplay.Building
         {
             state.RequireForUpdate<BuildingConfigComponent>();
             state.RequireForUpdate<GameStateComponent>();
-            state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<InputComponent>();
         }
 
@@ -32,26 +31,29 @@ namespace RTS.Gameplay.Building
             var buildingConfig = SystemAPI.GetSingletonEntity<BuildingConfigComponent>();
             var buildingDataBuffer = SystemAPI.GetBuffer<BuildingDataBuffer>(buildingConfig);
             
+            var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+
+            
             if (GameUI.Instance.BuildButtonClicked && !SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
-                Debug.Log("Build mode entered");
                 SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, true);
-                state.EntityManager.Instantiate(buildingDataBuffer[0].Prefab);
+                var buildingEntity = state.EntityManager.Instantiate(buildingDataBuffer[GameUI.Instance.BuildingIndex].Prefab);
+                ecb.AddComponent<BuildingPositioningTag>(buildingEntity);
             }
-
+            
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 var input = SystemAPI.GetSingleton<InputComponent>();
                 
-                var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
-                var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+                var building = buildingDataBuffer[GameUI.Instance.BuildingIndex].Prefab;
 
                 _currentBuildingRotation += input.ScrollAmount * 2f;
                 
                 var job = new BuildBuildingJob
                 {
                     Ecb = ecb.AsParallelWriter(),
-                    Building = buildingDataBuffer[0].Prefab,
+                    Building = building,
                     BuildingPosition = input.CursorWorldPosition,
                     BuildingRotation = _currentBuildingRotation,
                     BuildBuilding = input.WasPrimaryActionPressedThisFrame,
@@ -73,7 +75,7 @@ namespace RTS.Gameplay.Building
 
         }
         
-        [WithAll(typeof(BuildingComponent), typeof(BuildingPositioning))]
+        [WithAll(typeof(BuildingComponent), typeof(BuildingPositioningTag))]
         [BurstCompile]
         private partial struct BuildBuildingJob : IJobEntity
         {
@@ -100,8 +102,6 @@ namespace RTS.Gameplay.Building
                     var instantiatedBuilding = Ecb.Instantiate(index, Building);
                     Ecb.AddComponent<LocalTransform>(index, instantiatedBuilding);
                     Ecb.SetComponent(index, instantiatedBuilding, transform);
-                    
-                    Ecb.RemoveComponent<BuildingPositioning>(index, instantiatedBuilding);
                 }
 
                 if (CancelBuilding)
