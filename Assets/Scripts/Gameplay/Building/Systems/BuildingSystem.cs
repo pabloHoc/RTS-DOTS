@@ -18,7 +18,7 @@ namespace RTS.Gameplay.Building
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BuildingReferencesComponent>();
+            state.RequireForUpdate<BuildingConfigComponent>();
             state.RequireForUpdate<GameStateComponent>();
             state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<InputComponent>();
@@ -27,13 +27,14 @@ namespace RTS.Gameplay.Building
         public void OnUpdate(ref SystemState state)
         {
             var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
-            var buildingReferences = SystemAPI.GetSingleton<BuildingReferencesComponent>();
+            var buildingConfig = SystemAPI.GetSingletonEntity<BuildingConfigComponent>();
+            var buildingDataBuffer = SystemAPI.GetBuffer<BuildingDataBuffer>(buildingConfig);
             
             if (GameUI.Instance.BuildButtonClicked && !SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 Debug.Log("Build mode entered");
                 SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, true);
-                state.EntityManager.Instantiate(buildingReferences.SomeBuilding);
+                state.EntityManager.Instantiate(buildingDataBuffer[0].Prefab);
             }
 
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
@@ -48,7 +49,7 @@ namespace RTS.Gameplay.Building
                 var job = new BuildBuildingJob
                 {
                     Ecb = ecb.AsParallelWriter(),
-                    Building = buildingReferences.SomeBuilding,
+                    Building = buildingDataBuffer[0].Prefab,
                     BuildingPosition = input.CursorWorldPosition,
                     BuildingRotation = _currentBuildingRotation,
                     BuildBuilding = input.IsPrimaryActionPressed,
@@ -95,6 +96,7 @@ namespace RTS.Gameplay.Building
                 if (BuildBuilding)
                 {
                     var instantiatedBuilding = Ecb.Instantiate(index, Building);
+                    Ecb.AddComponent<LocalTransform>(index, instantiatedBuilding);
                     Ecb.SetComponent(index, instantiatedBuilding, transform);
                     
                     Ecb.RemoveComponent<BuildingPositioning>(index, instantiatedBuilding);
