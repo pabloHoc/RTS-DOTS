@@ -7,9 +7,8 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
-using UnityEngine;
 
-namespace RTS.Gameplay.Building
+namespace RTS.Gameplay.Buildings
 {
     [UpdateInGroup(typeof(GameplaySystemGroup))]
     public partial struct BuildingSystem : ISystem

@@ -1,4 +1,4 @@
-using RTS.Gameplay.Building;
+using RTS.Gameplay.Buildings;
 using UnityEngine;
 using UnityEngine.UIElements;
 

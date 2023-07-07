@@ -1,7 +1,7 @@
 using Unity.Collections;
 using Unity.Entities;
 
-namespace RTS.Gameplay.Building
+namespace RTS.Gameplay.Buildings
 {
     public struct BuildingDataBuffer : IBufferElementData
     {

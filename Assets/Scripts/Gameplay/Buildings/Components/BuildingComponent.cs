@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace RTS.Gameplay.Building
+namespace RTS.Gameplay.Buildings
 {
     public struct BuildingComponent : IComponentData
     {

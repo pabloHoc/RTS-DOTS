@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.Building
+namespace RTS.Gameplay.Buildings
 {
     [Serializable]
     public struct BuildingDataAuthoring

@@ -1,8 +1,7 @@
-using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.Building
+namespace RTS.Gameplay.Buildings
 {
     public class BuildingComponentAuthoring : MonoBehaviour
     {
