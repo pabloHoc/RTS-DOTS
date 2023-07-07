@@ -52,7 +52,7 @@ namespace RTS.Gameplay.Building
                     Building = buildingDataBuffer[0].Prefab,
                     BuildingPosition = input.CursorWorldPosition,
                     BuildingRotation = _currentBuildingRotation,
-                    BuildBuilding = input.IsPrimaryActionPressed,
+                    BuildBuilding = input.WasPrimaryActionPressedThisFrame,
                     CancelBuilding = input.IsCancelActionPressed
                 };
 

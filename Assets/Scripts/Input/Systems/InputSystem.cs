@@ -35,7 +35,8 @@ namespace RTS.Input
             
             SystemAPI.SetSingleton(new InputComponent
             {
-                IsPrimaryActionPressed = _inputActions.Player.PrimaryAction.WasPressedThisFrame(),
+                IsPrimaryActionPressed = _inputActions.Player.PrimaryAction.IsPressed(),
+                WasPrimaryActionPressedThisFrame = _inputActions.Player.PrimaryAction.WasPressedThisFrame(),
                 IsSecondaryActionPressed = _inputActions.Player.SecondaryAction.WasPressedThisFrame(),
                 IsSelectMultipleUnitsPressed = _inputActions.Player.SelectMultipleUnits.WasPressedThisFrame(),
                 CursorScreenPosition = cursorPosition,

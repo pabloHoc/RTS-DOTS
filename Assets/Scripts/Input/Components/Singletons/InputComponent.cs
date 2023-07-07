@@ -9,6 +9,8 @@ namespace RTS.Input
         public bool IsSecondaryActionPressed;
         public bool IsSelectMultipleUnitsPressed;
         
+        public bool WasPrimaryActionPressedThisFrame;
+        
         public bool IsOrbitCameraPressed; 
         public bool IsDragCameraPressed;
 
