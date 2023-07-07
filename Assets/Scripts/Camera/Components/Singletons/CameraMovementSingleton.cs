@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace RTS.Camera
 {
-    public struct CameraMovementComponent : IComponentData
+    public struct CameraMovementSingleton : IComponentData
     {
        public float2 Movement;
        public float2 Rotation;

@@ -16,7 +16,7 @@ namespace RTS.Gameplay.UnitMovement
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<MainCameraTag>();
+            state.RequireForUpdate<MainCameraSingleton>();
             state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
         }
 

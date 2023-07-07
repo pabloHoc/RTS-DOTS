@@ -1,4 +1,3 @@
-using RTS.Building;
 using RTS.GameState;
 using RTS.Input;
 using RTS.SystemGroups;
@@ -22,16 +21,16 @@ namespace RTS.Camera
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<GameStateComponent>();
-            state.RequireForUpdate<CameraSettingsComponent>();
-            state.RequireForUpdate<InputComponent>();
+            state.RequireForUpdate<GameStateSingleton>();
+            state.RequireForUpdate<CameraSettingsSingleton>();
+            state.RequireForUpdate<InputSingleton>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var input = SystemAPI.GetSingleton<InputComponent>();
-            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
+            var input = SystemAPI.GetSingleton<InputSingleton>();
+            var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
 
 
             if (!IsCursorInsideScreen(input.CursorScreenPosition)) return;
@@ -51,7 +50,7 @@ namespace RTS.Camera
             cursorPosition.x < Screen.width && cursorPosition.x > 0 && cursorPosition.y < Screen.height &&
             cursorPosition.y > 0;
 
-        private void HandleCameraRotation(InputComponent input) 
+        private void HandleCameraRotation(InputSingleton input) 
         {
             _cameraRotation.x += input.CameraRotationInput;
             
@@ -61,7 +60,7 @@ namespace RTS.Camera
             }
         }
         
-        private void HandleCameraHorizontalMovement(InputComponent input)
+        private void HandleCameraHorizontalMovement(InputSingleton input)
         {
             _cameraMovement = input.CameraMovementInput;
             
@@ -69,7 +68,7 @@ namespace RTS.Camera
             
             var cameraEdgeMovement = float2.zero;
             
-            var cameraSettings = SystemAPI.GetSingleton<CameraSettingsComponent>();
+            var cameraSettings = SystemAPI.GetSingleton<CameraSettingsSingleton>();
             var edgeTolerance = cameraSettings.EdgeTolerance;
 
             if (input.CursorScreenPosition.x < edgeTolerance * Screen.width)
@@ -95,7 +94,7 @@ namespace RTS.Camera
             }
         }
         
-        private void HandleCameraZoom(InputComponent input)
+        private void HandleCameraZoom(InputSingleton input)
         {
             _cameraZoomLevel = input.ScrollAmount;
         }
@@ -103,7 +102,7 @@ namespace RTS.Camera
         
         private void UpdateCameraMovement()
         {
-            SystemAPI.SetSingleton(new CameraMovementComponent
+            SystemAPI.SetSingleton(new CameraMovementSingleton
             {
                 Movement = _cameraMovement,
                 Rotation = _cameraRotation,

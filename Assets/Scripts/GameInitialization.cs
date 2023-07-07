@@ -1,4 +1,3 @@
-using RTS.Building;
 using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.GameState;
 using RTS.Input;
@@ -15,15 +14,15 @@ namespace RTS
 
             // Game State
             var gameState = entityManager.CreateEntity();
-            entityManager.AddComponent<GameStateComponent>(gameState);
+            entityManager.AddComponent<GameStateSingleton>(gameState);
             entityManager.AddComponent<BuildModeTag>(gameState);
             entityManager.SetComponentEnabled<BuildModeTag>(gameState, false);
 
             // Input
-            entityManager.CreateSingleton(new InputComponent());
+            entityManager.CreateSingleton(new InputSingleton());
             
             // Selection
-            entityManager.CreateSingleton(new SelectionComponent());
+            entityManager.CreateSingleton(new SelectionSingleton());
         }
     }
 }

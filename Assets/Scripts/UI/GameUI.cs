@@ -31,7 +31,7 @@ namespace RTS.UI
             // Get building data
 
             var buildingsData = GameObject.Find("BuildingConfig")
-                .GetComponent<BuildingConfigComponentAuthoring>().BuildingsData.ToArray();
+                .GetComponent<BuildingConfigSingletonAuthoring>().BuildingsData.ToArray();
 
             for (int i = 0; i < buildingsData.Length; i++)
             {

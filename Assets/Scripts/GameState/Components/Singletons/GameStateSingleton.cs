@@ -10,7 +10,7 @@ namespace RTS.GameState
         Playing
     }
     
-    public struct GameStateComponent : IComponentData
+    public struct GameStateSingleton : IComponentData
     {
         public GameState GameState;
     }

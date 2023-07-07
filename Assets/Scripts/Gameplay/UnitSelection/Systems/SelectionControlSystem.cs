@@ -1,4 +1,3 @@
-using RTS.Building;
 using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.GameState;
 using RTS.Input;
@@ -15,28 +14,28 @@ namespace RTS.Gameplay.UnitSelection
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<GameStateComponent>();
-            state.RequireForUpdate<InputComponent>();
-            state.RequireForUpdate<SelectionComponent>();
+            state.RequireForUpdate<GameStateSingleton>();
+            state.RequireForUpdate<InputSingleton>();
+            state.RequireForUpdate<SelectionSingleton>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             // There's some duplication here
-            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
+            var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
 
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 return;
             }
             
-            var input = SystemAPI.GetSingleton<InputComponent>();
-            var selection = SystemAPI.GetSingletonRW<SelectionComponent>();
+            var input = SystemAPI.GetSingleton<InputSingleton>();
+            var selection = SystemAPI.GetSingletonRW<SelectionSingleton>();
             
             if (input.IsPrimaryActionPressed && !selection.ValueRO.IsActive)
             {
-                SystemAPI.SetSingleton(new SelectionComponent
+                SystemAPI.SetSingleton(new SelectionSingleton
                 {
                     StartPosition = input.CursorWorldPosition,
                     EndPosition = input.CursorWorldPosition,

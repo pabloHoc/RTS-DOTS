@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace RTS.Camera
 {
-    public struct CameraSettingsComponent : IComponentData
+    public struct CameraSettingsSingleton : IComponentData
     {
         public float MaxMovementSpeed;
         public float Acceleration;

@@ -1,4 +1,3 @@
-using RTS.Building;
 using RTS.GameState;
 using RTS.Input;
 using RTS.SystemGroups;
@@ -20,15 +19,15 @@ namespace RTS.Gameplay.Building
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BuildingConfigComponent>();
-            state.RequireForUpdate<GameStateComponent>();
-            state.RequireForUpdate<InputComponent>();
+            state.RequireForUpdate<BuildingConfigSingleton>();
+            state.RequireForUpdate<GameStateSingleton>();
+            state.RequireForUpdate<InputSingleton>();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var gameState = SystemAPI.GetSingletonEntity<GameStateComponent>();
-            var buildingConfig = SystemAPI.GetSingletonEntity<BuildingConfigComponent>();
+            var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
+            var buildingConfig = SystemAPI.GetSingletonEntity<BuildingConfigSingleton>();
             var buildingDataBuffer = SystemAPI.GetBuffer<BuildingDataBuffer>(buildingConfig);
             
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
@@ -44,7 +43,7 @@ namespace RTS.Gameplay.Building
             
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
-                var input = SystemAPI.GetSingleton<InputComponent>();
+                var input = SystemAPI.GetSingleton<InputSingleton>();
                 
                 var building = buildingDataBuffer[GameUI.Instance.BuildingIndex].Prefab;
 

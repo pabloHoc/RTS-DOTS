@@ -2,7 +2,7 @@ using Unity.Entities;
 
 namespace RTS.Camera
 {
-    public struct CameraRigTag : IComponentData
+    public struct CameraRigSingleton : IComponentData
     {
         
     }

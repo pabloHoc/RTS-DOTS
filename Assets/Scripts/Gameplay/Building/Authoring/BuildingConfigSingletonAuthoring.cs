@@ -12,13 +12,13 @@ namespace RTS.Gameplay.Building
         public string Name;
         public GameObject Prefab;
     }
-    public class BuildingConfigComponentAuthoring : MonoBehaviour
+    public class BuildingConfigSingletonAuthoring : MonoBehaviour
     {
         public List<BuildingDataAuthoring> BuildingsData;
 
-        public class BuildingConfigComponentBaker : Baker<BuildingConfigComponentAuthoring>
+        public class BuildingConfigSingletonBaker : Baker<BuildingConfigSingletonAuthoring>
         {
-            public override void Bake(BuildingConfigComponentAuthoring authoring)
+            public override void Bake(BuildingConfigSingletonAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
@@ -33,7 +33,7 @@ namespace RTS.Gameplay.Building
                     });
                 }
 
-                AddComponent(entity, new BuildingConfigComponent());
+                AddComponent(entity, new BuildingConfigSingleton());
             }
         }
     }

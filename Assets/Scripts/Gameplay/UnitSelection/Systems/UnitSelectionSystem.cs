@@ -16,13 +16,13 @@ namespace RTS.Gameplay.UnitSelection
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
-            state.RequireForUpdate<SelectionComponent>();
+            state.RequireForUpdate<SelectionSingleton>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var selection = SystemAPI.GetSingleton<SelectionComponent>();
+            var selection = SystemAPI.GetSingleton<SelectionSingleton>();
 
             if (!selection.IsActive) return;
 

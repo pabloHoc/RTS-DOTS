@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTS.Camera
 {
-    public class CameraSettingsComponentAuthoring : MonoBehaviour
+    public class CameraSettingsSingletonAuthoring : MonoBehaviour
     {
         [Header("Horizontal Movement")]
         public float MaxMovementSpeed;
@@ -26,13 +26,13 @@ namespace RTS.Camera
         public float MaxZoomHeight;
         public float ZoomSpeed ;
         
-        public class CameraSettingsComponentBaker : Baker<CameraSettingsComponentAuthoring>
+        public class CameraSettingsSingletonBaker : Baker<CameraSettingsSingletonAuthoring>
         {
-            public override void Bake(CameraSettingsComponentAuthoring authoring)
+            public override void Bake(CameraSettingsSingletonAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity,
-                    new CameraSettingsComponent
+                    new CameraSettingsSingleton
                     {
                         MaxMovementSpeed = authoring.MaxMovementSpeed,
                         Acceleration = authoring.Acceleration,

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace RTS.Input
 {
-    public struct InputComponent : IComponentData
+    public struct InputSingleton : IComponentData
     {
         public bool IsPrimaryActionPressed;
         public bool IsSecondaryActionPressed;

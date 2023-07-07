@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace RTS.Camera
 {
-    public class CameraMovementComponentAuthoring : MonoBehaviour
+    public class CameraMovementSingletonAuthoring : MonoBehaviour
     {
         [NonSerialized] public float2 Movement;
         [NonSerialized] public float2 Rotation;
         [NonSerialized] public float Zoom;
 
-        public class CameraMovementComponentBaker : Baker<CameraMovementComponentAuthoring>
+        public class CameraMovementSingletonBaker : Baker<CameraMovementSingletonAuthoring>
         {
-            public override void Bake(CameraMovementComponentAuthoring authoring)
+            public override void Bake(CameraMovementSingletonAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new CameraMovementComponent
+                AddComponent(entity, new CameraMovementSingleton
                 {
                     Movement = authoring.Movement,
                     Rotation = authoring.Rotation,

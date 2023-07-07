@@ -17,7 +17,7 @@ namespace RTS.Input
 
         protected override void OnCreate()
         {
-            RequireForUpdate<InputComponent>();
+            RequireForUpdate<InputSingleton>();
             _inputActions = new InputActions();
         }
 
@@ -35,7 +35,7 @@ namespace RTS.Input
             var cursorPosition = _inputActions.Player.CursorPosition.ReadValue<Vector2>();
             var raycastHit = GetRaycastHit(cursorPosition);
             
-            SystemAPI.SetSingleton(new InputComponent
+            SystemAPI.SetSingleton(new InputSingleton
             {
                 IsPrimaryActionPressed = _inputActions.Player.PrimaryAction.IsPressed(),
                 WasPrimaryActionPressedThisFrame = _inputActions.Player.PrimaryAction.WasPressedThisFrame(),

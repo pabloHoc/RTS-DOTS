@@ -1,7 +1,6 @@
 using Unity.Entities;
-using UnityEngine;
 
-namespace RTS.Building
+namespace RTS.GameState
 {
     public struct BuildModeTag : IComponentData, IEnableableComponent
     {

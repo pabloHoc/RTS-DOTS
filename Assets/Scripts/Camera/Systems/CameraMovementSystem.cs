@@ -31,8 +31,8 @@ namespace RTS.Camera
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<CameraSettingsComponent>();
-            state.RequireForUpdate<CameraMovementComponent>();
+            state.RequireForUpdate<CameraSettingsSingleton>();
+            state.RequireForUpdate<CameraMovementSingleton>();
             
             _horizontalSpeedReference = new NativeReference<float>(0f, Allocator.Persistent);
             _horizontalDirectionReference = new NativeReference<float3>(float3.zero, Allocator.Persistent);
@@ -41,8 +41,8 @@ namespace RTS.Camera
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var camera = SystemAPI.GetSingleton<CameraMovementComponent>();
-            var cameraSettings = SystemAPI.GetSingleton<CameraSettingsComponent>();
+            var camera = SystemAPI.GetSingleton<CameraMovementSingleton>();
+            var cameraSettings = SystemAPI.GetSingleton<CameraSettingsSingleton>();
             var deltaTime = SystemAPI.Time.DeltaTime;
 
             var updateCameraRigPositionJob = new UpdateCameraRigPositionJob
@@ -71,12 +71,12 @@ namespace RTS.Camera
         }
     }
 
-    [WithAll(typeof(CameraRigTag))]
+    [WithAll(typeof(CameraRigSingleton))]
     [BurstCompile]
     public partial struct UpdateCameraRigPositionJob : IJobEntity
     {
-        public CameraMovementComponent Camera;
-        public CameraSettingsComponent CameraSettings;
+        public CameraMovementSingleton Camera;
+        public CameraSettingsSingleton CameraSettings;
         public float DeltaTime;
         public NativeReference<float> HorizontalSpeed;
         public NativeReference<float3> HorizontalDirection;
@@ -111,12 +111,12 @@ namespace RTS.Camera
         }
     }
 
-    [WithAll(typeof(MainCameraTag))]
+    [WithAll(typeof(MainCameraSingleton))]
     [BurstCompile]
     public partial struct UpdateCameraPositionJob : IJobEntity
     {
-        public CameraMovementComponent Camera;
-        public CameraSettingsComponent CameraSettings;
+        public CameraMovementSingleton Camera;
+        public CameraSettingsSingleton CameraSettings;
         public float DeltaTime;
         
         public void Execute(ref LocalTransform transform)
