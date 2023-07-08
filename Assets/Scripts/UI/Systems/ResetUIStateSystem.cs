@@ -1,9 +1,9 @@
-using Unity.Burst;
+using RTS.SystemGroups;
 using Unity.Entities;
 
 namespace RTS.UI
 {
-    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
+    [UpdateInGroup(typeof(UISystemGroup))]
     public partial struct ResetUIStateSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

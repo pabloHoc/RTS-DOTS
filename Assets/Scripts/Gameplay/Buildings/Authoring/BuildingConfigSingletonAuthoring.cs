@@ -21,11 +21,11 @@ namespace RTS.Gameplay.Buildings
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
-                var buffer = AddBuffer<BuildingDataBuffer>(entity);
+                var buffer = AddBuffer<BuildingDataBufferElement>(entity);
 
                 foreach (var buildingData in authoring.BuildingsData)
                 {
-                    buffer.Add(new BuildingDataBuffer
+                    buffer.Add(new BuildingDataBufferElement
                     {
                         Name = buildingData.Name,
                         Prefab = GetEntity(buildingData.Prefab, TransformUsageFlags.Dynamic)

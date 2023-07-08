@@ -7,11 +7,12 @@ namespace RTS.UI
     public class GameUI : MonoBehaviour
     {
         public static GameUI Instance { get; private set; }
+        public bool BuildButtonClicked { get; private set; }
+        public int BuildingIndex { get; private set; }
+        public bool IsMouseOverUI { get; private set; }
 
-        public bool BuildButtonClicked;
-        public int BuildingIndex;
-
-        public bool IsMouseOverUI;
+        private VisualElement _root;
+        private Label _resourcesLabel;
         
         private void Awake() 
         { 
@@ -27,14 +28,28 @@ namespace RTS.UI
         
         private void Start()
         {
-            var uiDocument = GetComponent<UIDocument>();
-            var buildingBox = uiDocument.rootVisualElement.Q<GroupBox>("BuildingBox");
+            _root = GetComponent<UIDocument>().rootVisualElement;
             
-            uiDocument.rootVisualElement.RegisterCallback<MouseEnterEvent>(HandleMouseEnterUI);
-            uiDocument.rootVisualElement.RegisterCallback<MouseLeaveEvent>(HandleMouseLeaveUI);
-            // Get building data
+            _root.RegisterCallback<MouseEnterEvent>(HandleMouseEnterUI);
+            _root.RegisterCallback<MouseLeaveEvent>(HandleMouseLeaveUI);
 
-            var buildingsData = GameObject.Find("BuildingConfig")
+            _resourcesLabel = _root.Q<Label>("ResourcesLabel");
+
+            GenerateUI();
+        }
+        
+        // UI Generation
+
+        private void GenerateUI()
+        {
+            GenerateBuildingButtons();
+            GenerateResourceLabels();
+        }
+
+        private void GenerateBuildingButtons()
+        {
+            var buildingBox = _root.Q<GroupBox>("BuildingBox");
+            var buildingsData = GameObject.Find("BuildingsConfig")
                 .GetComponent<BuildingConfigSingletonAuthoring>().BuildingsData.ToArray();
 
             for (int i = 0; i < buildingsData.Length; i++)
@@ -52,6 +67,13 @@ namespace RTS.UI
                 buildingBox.Add(buildingButton);
             }
         }
+        
+        private void GenerateResourceLabels()
+        {
+            
+        }
+        
+        // Handlers
 
         private void HandleMouseLeaveUI(MouseLeaveEvent evt)
         {
@@ -70,6 +92,14 @@ namespace RTS.UI
             BuildingIndex = i;
         }
 
+        // Updates
+        
+        public void UpdateResources(string resources)
+        {
+            _resourcesLabel.text = resources;
+        }
+
+        
         public void ResetUIState()
         {
             BuildButtonClicked = false;

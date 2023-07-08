@@ -27,7 +27,7 @@ namespace RTS.Gameplay.Buildings
         {
             var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
             var buildingConfig = SystemAPI.GetSingletonEntity<BuildingConfigSingleton>();
-            var buildingDataBuffer = SystemAPI.GetBuffer<BuildingDataBuffer>(buildingConfig);
+            var buildingDataBuffer = SystemAPI.GetBuffer<BuildingDataBufferElement>(buildingConfig);
             
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);

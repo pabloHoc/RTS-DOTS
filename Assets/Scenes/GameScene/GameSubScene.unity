@@ -492,7 +492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121388330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4400216, y: 0, z: 13.583336}
+  m_LocalPosition: {x: -50.59632, y: 0, z: 13.583336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -588,8 +588,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617526646}
-  m_LocalRotation: {x: 0.25530502, y: 0.15865566, z: -0.04251188, w: 0.95280665}
-  m_LocalPosition: {x: -2.8207333, y: 7.9296646, z: -13.257583}
+  m_LocalRotation: {x: 0.25530502, y: 0.15865566, z: -0.04251188, w: 0.9528066}
+  m_LocalPosition: {x: -2.820732, y: 7.9296646, z: -13.257583}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -893,6 +893,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1302723384}
+  - {fileID: 1109315518}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1237,6 +1238,57 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!1 &1109315517
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109315518}
+  - component: {fileID: 1109315519}
+  m_Layer: 0
+  m_Name: ResourcesConfig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109315518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109315517}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 779347393}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1109315519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109315517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b3381e8f29435ea942d2f7019e84e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ResourcesData:
+  - Name: Gold
+    InitialQuantity: 100
+  - Name: Wood
+    InitialQuantity: 150
+  - Name: Stone
+    InitialQuantity: 50
 --- !u!1 &1302723383
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1300,7 @@ GameObject:
   - component: {fileID: 1302723384}
   - component: {fileID: 1302723385}
   m_Layer: 0
-  m_Name: BuildingConfig
+  m_Name: BuildingsConfig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
