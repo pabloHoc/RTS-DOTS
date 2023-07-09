@@ -1,12 +1,15 @@
-using System.ComponentModel;
-using RTS.Gameplay.Player;
+using RTS.Gameplay.Buildings;
+using RTS.Gameplay.Players;
 using RTS.SystemGroups;
 using Unity.Burst;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
+using UnityEngine;
 
 namespace RTS.Gameplay.Resources
 {
-    [UpdateInGroup(typeof(GameplaySystemGroup))]
+    [UpdateInGroup(typeof(GameplaySystemGroup), OrderLast = true)]
     public partial struct PlayerResourcesUpdateSystem : ISystem
     {
         private BufferLookup<ResourceBufferElement> _resourceBufferLookup;
@@ -15,7 +18,6 @@ namespace RTS.Gameplay.Resources
         public void OnCreate(ref SystemState state)
         {
             _resourceBufferLookup = state.GetBufferLookup<ResourceBufferElement>(true);
-
         }
 
         [BurstCompile]
@@ -26,8 +28,13 @@ namespace RTS.Gameplay.Resources
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
-            var job = new UpdatePlayerResourcesJob();
+            var job = new UpdatePlayerResourcesJob
+            {
+                Ecb = ecb.AsParallelWriter(),
+                ResourceBufferLookup = _resourceBufferLookup
+            };
 
+            
             state.Dependency = job.ScheduleParallel(state.Dependency);
 
         }
@@ -40,22 +47,65 @@ namespace RTS.Gameplay.Resources
     }
     
     [WithAll(typeof(PlayerComponent))]
-    [BurstCompile]
+    // [BurstCompile]
     public partial struct UpdatePlayerResourcesJob : IJobEntity {
 
         public EntityCommandBuffer.ParallelWriter Ecb;
+        [ReadOnly] public BufferLookup<ResourceBufferElement> ResourceBufferLookup;
 
         public void Execute(                
             [ChunkIndexInQuery] int index,
-            Entity entity,
-            DynamicBuffer<ResourceBufferElement> resourceBuffer
+            Entity player
             )
         {
-            for (int i = 0; i < resourceBuffer.Length; i++)
+            var stored = new UnsafeHashMap<FixedString32Bytes, int>(4, Allocator.TempJob);
+            var additiveModifiers = new UnsafeHashMap<FixedString32Bytes, int>(10, Allocator.TempJob);
+            var resourceBuffer = ResourceBufferLookup[player];
+            
+            foreach (var resource in resourceBuffer)
             {
-                var resource = resourceBuffer[i];
-                resource.Quantity++;
-                resourceBuffer[i] = resource;
+                switch (resource.Type)
+                {
+                    case ResourceType.Stored:
+                        stored.TryAdd(resource.Name, resource.Value);
+                        break;
+                    // TODO: add a util for this
+                    case ResourceType.AdditiveModifier:
+                    {
+                        Debug.Log($"HERE A {resource.Name} {resource.Value}");
+                        if (!additiveModifiers.TryAdd(resource.Name, resource.Value))
+                        {
+                            Debug.Log("HERE B");
+                            var currentValue = additiveModifiers[resource.Name];
+                            additiveModifiers.Remove(resource.Name);
+                            additiveModifiers.TryAdd(resource.Name, currentValue + resource.Value);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            foreach (var entry in additiveModifiers)
+            {
+                var currentValue = stored[entry.Key];
+                Debug.Log($"HERE C {entry.Key} Current: ${currentValue} New: ${entry.Value}");
+                stored.Remove(entry.Key);
+                stored.Add(entry.Key, currentValue + entry.Value);
+            }
+
+            Ecb.SetBuffer<ResourceBufferElement>(index, player);
+            
+            // Reset buffer
+            Ecb.SetBuffer<ResourceBufferElement>(index, player);
+            
+            foreach (var entry in stored)
+            {
+                Ecb.AppendToBuffer(index, player, new ResourceBufferElement
+                {
+                    Name = entry.Key,
+                    Value = entry.Value,
+                    Type = ResourceType.Stored
+                });
             }
         }
     }

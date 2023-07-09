@@ -50,9 +50,9 @@ namespace RTS.UI
         {
             var buildingBox = _root.Q<GroupBox>("BuildingBox");
             var buildingsData = GameObject.Find("BuildingsConfig")
-                .GetComponent<BuildingConfigSingletonAuthoring>().BuildingsData.ToArray();
+                .GetComponent<BuildingDatabaseAuthoring>().BuildingsData;
 
-            for (int i = 0; i < buildingsData.Length; i++)
+            for (int i = 0; i < buildingsData.Count; i++)
             {
                 var buildingButton = new Button
                 {
@@ -62,8 +62,8 @@ namespace RTS.UI
                         BuildingIndex = i
                     }
                 };
-                var i1 = i;
-                buildingButton.clicked += () => HandleBuildButtonClicked(i1);
+                var temp = i;
+                buildingButton.clicked += () => HandleBuildButtonClicked(temp);
                 buildingBox.Add(buildingButton);
             }
         }
@@ -87,7 +87,6 @@ namespace RTS.UI
 
         private void HandleBuildButtonClicked(int i)
         {
-            Debug.Log($"Clicked {i}");
             BuildButtonClicked = true;
             BuildingIndex = i;
         }

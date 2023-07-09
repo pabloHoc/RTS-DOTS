@@ -492,7 +492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121388330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -50.59632, y: 0, z: 13.583336}
+  m_LocalPosition: {x: -2.3851454, y: 0, z: 25.104591}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -588,8 +588,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617526646}
-  m_LocalRotation: {x: 0.25530502, y: 0.15865566, z: -0.04251188, w: 0.9528066}
-  m_LocalPosition: {x: -2.820732, y: 7.9296646, z: -13.257583}
+  m_LocalRotation: {x: 0.25530505, y: 0.15865563, z: -0.042511858, w: 0.9528066}
+  m_LocalPosition: {x: -3.9134538, y: 9.876584, z: -16.447771}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1279,16 +1279,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1109315517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87b3381e8f29435ea942d2f7019e84e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 71b5abd8e65b48e38065b3f1bfe44dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ResourcesData:
   - Name: Gold
-    InitialQuantity: 100
+    Value: 100
   - Name: Wood
-    InitialQuantity: 150
+    Value: 100
   - Name: Stone
-    InitialQuantity: 50
+    Value: 100
+  - Name: Food
+    Value: 100
 --- !u!1 &1302723383
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,7 +1300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1302723384}
-  - component: {fileID: 1302723385}
+  - component: {fileID: 1302723386}
   m_Layer: 0
   m_Name: BuildingsConfig
   m_TagString: Untagged
@@ -1321,7 +1323,7 @@ Transform:
   m_Father: {fileID: 779347393}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1302723385
+--- !u!114 &1302723386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1330,13 +1332,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1302723383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f431cc24703a4ca8bb328aee541b8ada, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a99abc5f659462b9287f2e14b5f6a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   BuildingsData:
-  - Name: House
-    Prefab: {fileID: 4155165053055170188, guid: b026dd603bca44db28e226cdf1da66fa,
-      type: 3}
   - Name: Barrack
+    Cost:
+    - Name: Gold
+      Value: 100
     Prefab: {fileID: 4643711615907867271, guid: ecc544369cc0a4f5cb98662a6c4a9cff,
+      type: 3}
+  - Name: House
+    Cost:
+    - Name: Wood
+      Value: 100
+    Prefab: {fileID: 4155165053055170188, guid: b026dd603bca44db28e226cdf1da66fa,
       type: 3}

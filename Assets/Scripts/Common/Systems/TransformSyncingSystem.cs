@@ -16,6 +16,7 @@ namespace RTS.Common
         public void OnUpdate(ref SystemState state)
         {
             var query = SystemAPI.QueryBuilder().WithAll<SyncTransformComponent>().Build();
+            // TODO: memory leak here - check (maybe?)
             var entities = query.ToEntityArray(Allocator.TempJob);
             var transformAccessArray = new TransformAccessArray(0);
 

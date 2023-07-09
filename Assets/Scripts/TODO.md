@@ -7,3 +7,5 @@
 [] Create entities procedurally (including singletons)
 [] Archetypes?
 [] Layers
+[] Custom bootstrap and system initialization
+[] Blob assets for configs

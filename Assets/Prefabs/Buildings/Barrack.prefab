@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: Barrack
   BuildingTime: 0
 --- !u!65 &5930595367893607863
 BoxCollider:

@@ -1,4 +1,5 @@
-using RTS.Gameplay.Player;
+using RTS.Gameplay.Players;
+using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
 using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.GameState;
@@ -33,23 +34,24 @@ namespace RTS
 
         private void CreatePlayer()
         {
-            var player = _entityManager.CreateEntity();
+            var player = _entityManager.CreateSingleton<HumanPlayerSingleton>();
             _entityManager.AddComponent<PlayerComponent>(player);
             var resourceBuffer = _entityManager.AddBuffer<ResourceBufferElement>(player);
 
             PopulatePlayerResources(resourceBuffer);
         }
 
-        private void PopulatePlayerResources(DynamicBuffer<ResourceBufferElement> resourceBuffer)
+        private static void PopulatePlayerResources(DynamicBuffer<ResourceBufferElement> resourceBuffer)
         {
-            var resourcesData = GameObject.Find("ResourcesConfig").GetComponent<ResourceConfigSingletonAuthoring>().ResourcesData;
+            var resourcesData = GameObject.Find("ResourcesConfig").GetComponent<ResourceConfigAuthoring>().ResourcesData.ToArray();
 
-            foreach (var resourceData in resourcesData)
+            for (var i = 0; i < resourcesData.Length; i++)
             {
                 resourceBuffer.Add(new ResourceBufferElement
                 {
-                    Name = resourceData.Name,
-                    Quantity = resourceData.InitialQuantity
+                    Name = resourcesData[i].Name,
+                    Value = resourcesData[i].Value,
+                    Type = ResourceType.Stored
                 });
             }
         }

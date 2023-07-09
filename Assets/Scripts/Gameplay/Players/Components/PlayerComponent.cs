@@ -1,7 +1,8 @@
 using Unity.Entities;
 
-namespace RTS.Gameplay.Player
+namespace RTS.Gameplay.Players
 {
+    // This is a tag maybe
     public struct PlayerComponent : IComponentData
     {
         
