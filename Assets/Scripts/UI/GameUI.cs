@@ -52,7 +52,7 @@ namespace RTS.UI
             var buildingsData = GameObject.Find("BuildingsConfig")
                 .GetComponent<BuildingDatabaseAuthoring>().BuildingsData;
 
-            for (int i = 0; i < buildingsData.Count; i++)
+            for (var i = 0; i < buildingsData.Count; i++)
             {
                 var buildingButton = new Button
                 {

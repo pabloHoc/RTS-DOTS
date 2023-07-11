@@ -121,18 +121,6 @@ namespace RTS.Gameplay.Buildings
                         Entity = Player
                     });
 
-                    // Copy resource buffer
-                    for (var i = 0; i < buildingData.Cost.Length; i++)
-                    {
-                        var resource = buildingData.Cost[i];
-                        Ecb.AppendToBuffer(index, instantiatedBuilding, new ResourceBufferElement
-                        {
-                            Name = resource.Name,
-                            Value = resource.Value,
-                            Type = ResourceType.Cost
-                        });
-                    }
-                    
                     // Add created tag
                     Ecb.AddComponent<EntityCreatedTag>(index, instantiatedBuilding);
                 }

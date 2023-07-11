@@ -1,4 +1,4 @@
-using RTS.Gameplay.UnitSelection.Tags;
+using RTS.Gameplay.UnitSelection;
 using RTS.GameState;
 using RTS.Input;
 using RTS.SystemGroups;

@@ -14,6 +14,7 @@ namespace RTS.UI
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<HumanPlayerSingleton>();
             state.RequireForUpdate<ResourceConfigSingleton>();
         }
 
@@ -31,7 +32,10 @@ namespace RTS.UI
             // This can be turn into a job, maybe
             foreach (var resource in resources)
             {
-                resourceText += $"{resource.Name}: {resource.Value} |";
+                if (resource.Type == ResourceType.Stored)
+                {
+                    resourceText += $"{resource.Name}: {resource.Value} |";
+                }
             }
             
             GameUI.Instance.UpdateResources(resourceText);

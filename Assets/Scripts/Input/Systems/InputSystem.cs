@@ -56,7 +56,7 @@ namespace RTS.Input
                 CameraMovementInput = _inputActions.Player.MoveCamera.ReadValue<Vector2>(),
                 CameraRotationInput = _inputActions.Player.RotateCamera.ReadValue<float>(),
                 ScrollAmount = _inputActions.Player.Zoom.ReadValue<Vector2>().y / 100f,
-                IsCancelActionPressed = _inputActions.Player.CancelAction.WasPressedThisFrame()
+                IsCancelActionPressed = _inputActions.Player.CancelAction.WasPressedThisFrame() || _inputActions.Player.SecondaryAction.WasPressedThisFrame()
             });            
         }
 

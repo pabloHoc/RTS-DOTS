@@ -1,7 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace RTS.Gameplay.UnitSelection.Singletons
+namespace RTS.Gameplay.UnitSelection
 {
     public struct SelectionSingleton : IComponentData
     {

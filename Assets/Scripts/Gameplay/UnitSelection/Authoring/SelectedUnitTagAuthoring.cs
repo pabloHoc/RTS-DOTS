@@ -1,4 +1,4 @@
-using RTS.Gameplay.UnitSelection.Tags;
+using RTS.Gameplay.UnitSelection;
 using Unity.Entities;
 using UnityEngine;
 

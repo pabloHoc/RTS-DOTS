@@ -1,7 +1,7 @@
 using RTS.Gameplay.Players;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
-using RTS.Gameplay.UnitSelection.Singletons;
+using RTS.Gameplay.UnitSelection;
 using RTS.GameState;
 using RTS.Input;
 using Unity.Entities;

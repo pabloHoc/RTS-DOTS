@@ -118,6 +118,8 @@ GameObject:
   - component: {fileID: 9187620553666504750}
   - component: {fileID: 6011854439865325045}
   - component: {fileID: 535637989656545439}
+  - component: {fileID: -4874313619586226173}
+  - component: {fileID: -5915790860324813537}
   m_Layer: 0
   m_Name: House
   m_TagString: Untagged
@@ -224,5 +226,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Index: 1
   Name: House
   BuildingTime: 5
+--- !u!114 &-4874313619586226173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155165053055170188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ab7909e9444c78b0980df725db2f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5915790860324813537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155165053055170188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732166a941c3454a85a5328d7a1e3d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

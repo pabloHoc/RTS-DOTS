@@ -1,5 +1,5 @@
-using RTS.Gameplay.UnitSelection.Singletons;
-using RTS.Gameplay.UnitSelection.Tags;
+using RTS.Gameplay.UnitMovement;
+using RTS.Gameplay.UnitSelection;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
@@ -23,6 +23,7 @@ namespace RTS.Gameplay.UnitSelection
         public void OnUpdate(ref SystemState state)
         {
             var selection = SystemAPI.GetSingleton<SelectionSingleton>();
+            var movableComponentLookup = SystemAPI.GetComponentLookup<MovableComponent>(true);
 
             if (!selection.IsActive) return;
 
@@ -37,10 +38,11 @@ namespace RTS.Gameplay.UnitSelection
 
             var job = new SelectUnitsJob
             {
-                SelectionBox = selectionBox,
                 Ecb = ecb.AsParallelWriter(),
+                SelectionBox = selectionBox,
                 KeepCurrentlySelected = selection.KeepCurrentlySelected,
-                SelectedEntity = selection.SelectedEntity
+                SelectedEntity = selection.SelectedEntity,
+                MovableComponentLookup = movableComponentLookup
             };
 
             state.Dependency = job.ScheduleParallel(state.Dependency);
@@ -66,18 +68,24 @@ namespace RTS.Gameplay.UnitSelection
     [BurstCompile]
     public partial struct SelectUnitsJob : IJobEntity
     {
-        [ReadOnly] public AABB SelectionBox; 
         public EntityCommandBuffer.ParallelWriter Ecb;
+        [ReadOnly] public AABB SelectionBox; 
         [ReadOnly] public bool KeepCurrentlySelected;
-        public Entity SelectedEntity;
+        [ReadOnly] public Entity SelectedEntity;
+        [ReadOnly] public ComponentLookup<MovableComponent> MovableComponentLookup;
 
         public void Execute(Entity entity, LocalToWorld transform)
         {
-            if (SelectionBox.Contains(transform.Position) || entity.Equals(SelectedEntity))
+            var isEntityMovable = MovableComponentLookup.HasComponent(SelectedEntity);
+            var isSelectedEntityMovable = MovableComponentLookup.HasComponent(SelectedEntity);
+            
+            if (entity.Equals(SelectedEntity) || (isEntityMovable && SelectionBox.Contains(transform.Position)))
             {
                 Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, true);
             }
-            else if (!KeepCurrentlySelected)
+            
+            // If we select a building we want to deselect movable units
+            else if (!KeepCurrentlySelected || !isSelectedEntityMovable)
             {
                 Ecb.SetComponentEnabled<SelectedUnitTag>(entity.Index, entity, false);
             }

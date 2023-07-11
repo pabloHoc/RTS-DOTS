@@ -1,4 +1,3 @@
-using RTS.Gameplay.UnitSelection.Singletons;
 using RTS.GameState;
 using RTS.Input;
 using RTS.SystemGroups;

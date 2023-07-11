@@ -117,6 +117,8 @@ GameObject:
   - component: {fileID: 355321558137289418}
   - component: {fileID: 6552014339155912774}
   - component: {fileID: 1845966365333808975}
+  - component: {fileID: 3498350439656945934}
+  - component: {fileID: 8650547354723492094}
   - component: {fileID: 5930595367893607863}
   m_Layer: 0
   m_Name: Barrack
@@ -203,8 +205,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Index: 0
   Name: Barrack
   BuildingTime: 0
+--- !u!114 &3498350439656945934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4643711615907867271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ab7909e9444c78b0980df725db2f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8650547354723492094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4643711615907867271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732166a941c3454a85a5328d7a1e3d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &5930595367893607863
 BoxCollider:
   m_ObjectHideFlags: 0

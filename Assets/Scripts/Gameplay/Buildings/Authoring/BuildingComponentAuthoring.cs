@@ -8,29 +8,18 @@ namespace RTS.Gameplay.Buildings
 {
     public class BuildingComponentAuthoring : MonoBehaviour
     {
+        public int Index;
         public string Name;
         public float BuildingTime;
-        public List<ResourceDataAuthoring> Cost;
 
         public class BuildingComponentBaker : Baker<BuildingComponentAuthoring>
         {
             public override void Bake(BuildingComponentAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                var buffer = AddBuffer<ResourceBufferElement>(entity);
-                
-                foreach (var resource in authoring.Cost)
-                {
-                    buffer.Add(new ResourceBufferElement
-                    {
-                        Name = resource.Name,
-                        Value = resource.Value,
-                        Type = ResourceType.Cost
-                    });
-                }
-                
                 AddComponent(entity, new BuildingComponent
                 {
+                    Index = authoring.Index,
                     Name = authoring.Name,
                     BuildingTime = authoring.BuildingTime
                 });

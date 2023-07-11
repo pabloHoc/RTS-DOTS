@@ -52,15 +52,15 @@ namespace RTS.Gameplay.Buildings
 
         public void Execute(
             [ChunkIndexInQuery] int index,
-            EntityOwnerComponent owner
+            in EntityOwnerComponent owner,
+            in BuildingComponent building
         )
         {
-            ref var buildingData = ref BuildingDatabase.Value.Buildings[0];
+            ref var buildingData = ref BuildingDatabase.Value.Buildings[building.Index];
 
             for (var i = 0; i < buildingData.Cost.Length; i++)
             {
                 var resource = buildingData.Cost[i];
-                Debug.Log($"COST: {resource.Name} {resource.Value} OWNER: {owner.Entity.Index}");
 ;               Ecb.AppendToBuffer(index, owner.Entity, new ResourceBufferElement
                 {
                     Name = resource.Name,
@@ -68,7 +68,6 @@ namespace RTS.Gameplay.Buildings
                     Type = ResourceType.AdditiveModifier
                 });
             }
-  
         }
     }
 }
