@@ -208,6 +208,8 @@ MonoBehaviour:
   Index: 0
   Name: Barrack
   BuildingTime: 0
+  Units:
+  - {fileID: 3844227185308589161, guid: 63bf851fcb8bb4883b295a6e5124f95b, type: 3}
 --- !u!114 &3498350439656945934
 MonoBehaviour:
   m_ObjectHideFlags: 0

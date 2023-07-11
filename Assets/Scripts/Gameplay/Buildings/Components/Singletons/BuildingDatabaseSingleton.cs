@@ -13,6 +13,7 @@ namespace RTS.Gameplay.Buildings
     {
         public FixedString32Bytes Name;
         public BlobArray<ResourceData> Cost;
+        
     }
 
     public struct BuildingsData

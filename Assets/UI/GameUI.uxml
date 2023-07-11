@@ -1,5 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=b996658f4f24d441584b947fa343a197&amp;type=3#GameUI" />
-    <ui:GroupBox name="BuildingBox" style="height: 38px; width: 1006px; flex-direction: row; max-width: 100%; min-width: 100%; padding-left: 0; margin-left: 0; margin-right: 0; position: absolute; bottom: 0; margin-top: 0; margin-bottom: 0;" />
-    <ui:Label tabindex="-1" text="Resources" display-tooltip-when-elided="true" name="ResourcesLabel" style="font-size: 12px;" />
+    <ui:Label tabindex="-1" text="Resources" display-tooltip-when-elided="true" name="ResourcesLabel" style="font-size: 12px; background-color: rgb(130, 130, 130); border-bottom-width: 1px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-bottom-color: rgb(0, 0, 0);" />
+    <ui:GroupBox name="BottomGroupBox" style="height: 38px; width: 100%; flex-direction: row; max-width: 100%; min-width: 100%; padding-left: 0; margin-left: 0; margin-right: 0; position: absolute; bottom: 0; margin-top: 0; margin-bottom: 0; align-items: stretch; justify-content: flex-start; background-color: rgb(130, 130, 130); border-top-width: 1px; border-top-color: rgb(0, 0, 0);">
+        <ui:GroupBox name="BuildingGroupBox" style="flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-direction: row;" />
+        <ui:GroupBox name="UnitProductionGroupBox" style="flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+    </ui:GroupBox>
 </ui:UXML>

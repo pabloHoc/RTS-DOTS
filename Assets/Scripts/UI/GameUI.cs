@@ -13,6 +13,7 @@ namespace RTS.UI
 
         private VisualElement _root;
         private Label _resourcesLabel;
+        private GroupBox _unitProductionGroupBox;
         
         private void Awake() 
         { 
@@ -34,6 +35,7 @@ namespace RTS.UI
             _root.RegisterCallback<MouseLeaveEvent>(HandleMouseLeaveUI);
 
             _resourcesLabel = _root.Q<Label>("ResourcesLabel");
+            _unitProductionGroupBox = _root.Q<GroupBox>("UnitProductionGroupBox");
 
             GenerateUI();
         }
@@ -48,7 +50,7 @@ namespace RTS.UI
 
         private void GenerateBuildingButtons()
         {
-            var buildingBox = _root.Q<GroupBox>("BuildingBox");
+            var buildingBox = _root.Q<GroupBox>("BuildingGroupBox");
             var buildingsData = GameObject.Find("BuildingsConfig")
                 .GetComponent<BuildingDatabaseAuthoring>().BuildingsData;
 
@@ -98,7 +100,16 @@ namespace RTS.UI
             _resourcesLabel.text = resources;
         }
 
+        public void ShowUnitProductionMenu()
+        {
+            _unitProductionGroupBox.visible = true;
+        }
         
+        public void HideUnitProductionMenu()
+        {
+            _unitProductionGroupBox.visible = false;
+        }
+
         public void ResetUIState()
         {
             BuildButtonClicked = false;

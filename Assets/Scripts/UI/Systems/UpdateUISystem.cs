@@ -1,6 +1,8 @@
+using RTS.Gameplay.Buildings;
 using RTS.Gameplay.Players;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
+using RTS.Gameplay.UnitSelection;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
@@ -39,6 +41,17 @@ namespace RTS.UI
             }
             
             GameUI.Instance.UpdateResources(resourceText);
+        }
+
+        private void UpdateUnitProductionMenu()
+        {
+            var buildingDatabase = SystemAPI.GetSingleton<BuildingDatabaseSingleton>();
+            
+            foreach (var (_, building) in SystemAPI.Query<SelectedUnitTag, BuildingComponent>())
+            {
+                ref var buildingData = ref buildingDatabase.Data.Value.Buildings[building.Index];
+                buildingData
+            }
         }
 
         [BurstCompile]
