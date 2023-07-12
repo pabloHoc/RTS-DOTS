@@ -43,7 +43,7 @@ namespace RTS
 
         private static void PopulatePlayerResources(DynamicBuffer<ResourceBufferElement> resourceBuffer)
         {
-            var resourcesData = GameObject.Find("ResourcesConfig").GetComponent<ResourceConfigAuthoring>().ResourcesData.ToArray();
+            var resourcesData = GameObject.Find("ResourceDatabase").GetComponent<ResourceConfigAuthoring>().ResourcesData.ToArray();
 
             for (var i = 0; i < resourcesData.Length; i++)
             {

@@ -1,16 +1,16 @@
 using RTS.Common;
 using RTS.Gameplay.Resources;
+using RTS.Gameplay.Units;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine;
 
-namespace RTS.Gameplay.Buildings
+namespace RTS.Gameplay.UnitBuilding
 {
     [UpdateInGroup(typeof(GameplaySystemGroup))]
-    [UpdateAfter(typeof(BuildingConstructionSystem))]
-    public partial struct BuildingCostSystem : ISystem
+    [UpdateAfter(typeof(UnitConstructionSystem))]
+    public partial struct UnitCostDeductionSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
@@ -22,12 +22,12 @@ namespace RTS.Gameplay.Buildings
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
-            var buildingDatabase = SystemAPI.GetSingleton<BuildingDatabaseSingleton>().Data;
+            var buildingDatabase = SystemAPI.GetSingleton<UnitDatabaseSingleton>().Data;
 
             var job = new AddBuildingCostJob
             {
                 Ecb = ecb.AsParallelWriter(),
-                BuildingDatabase = buildingDatabase
+                UnitDatabase = buildingDatabase
             };
             
             state.Dependency = job.ScheduleParallel(state.Dependency);
@@ -44,19 +44,19 @@ namespace RTS.Gameplay.Buildings
         }
     }
 
-    [WithAll(typeof(BuildingComponent), typeof(EntityCreatedTag))]
+    [WithAll(typeof(UnitComponent), typeof(EntityCreatedTag))]
     public partial struct AddBuildingCostJob : IJobEntity
     {
         public EntityCommandBuffer.ParallelWriter Ecb;
-        public BlobAssetReference<BuildingsData> BuildingDatabase;
+        public BlobAssetReference<UnitsBlobAsset> UnitDatabase;
 
         public void Execute(
             [ChunkIndexInQuery] int index,
             in EntityOwnerComponent owner,
-            in BuildingComponent building
+            in UnitComponent unit
         )
         {
-            ref var buildingData = ref BuildingDatabase.Value.Buildings[building.Index];
+            ref var buildingData = ref UnitDatabase.Value.Units[unit.UnitId];
 
             for (var i = 0; i < buildingData.Cost.Length; i++)
             {

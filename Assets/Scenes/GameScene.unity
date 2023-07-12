@@ -1159,7 +1159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39aca5bc1e1d45ec8f673c042ec679ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildButtonClicked: 0
 --- !u!1 &780065909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,7 +1201,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:

@@ -223,12 +223,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4155165053055170188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
+  m_Script: {fileID: 11500000, guid: e4e06c51baa34e989cf8534acb7f2685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Index: 1
-  Name: House
-  BuildingTime: 5
+  UnitId: 1
 --- !u!114 &-4874313619586226173
 MonoBehaviour:
   m_ObjectHideFlags: 0

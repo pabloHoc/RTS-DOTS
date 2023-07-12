@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fe7074cc6ec4c2da060fca3e815c9d7, type: 3}
+  m_Name: UnitsData
+  m_EditorClassIdentifier: 
+  Buildings:
+  - Name: Barrack
+    BuildTime: 0
+    Cost:
+    - Name: Gold
+      Value: 100
+    Prefab: {fileID: 4643711615907867271, guid: ecc544369cc0a4f5cb98662a6c4a9cff,
+      type: 3}
+  - Name: House
+    BuildTime: 0
+    Cost:
+    - Name: Wood
+      Value: 100
+    Prefab: {fileID: 4155165053055170188, guid: b026dd603bca44db28e226cdf1da66fa,
+      type: 3}
+  Units:
+  - Name: Worker
+    BuildTime: 0
+    Cost:
+    - Name: Gold
+      Value: 100
+    Prefab: {fileID: 3844227185308589161, guid: 63bf851fcb8bb4883b295a6e5124f95b,
+      type: 3}

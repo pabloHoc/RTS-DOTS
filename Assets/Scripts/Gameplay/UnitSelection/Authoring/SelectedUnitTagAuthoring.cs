@@ -1,4 +1,3 @@
-using RTS.Gameplay.UnitSelection;
 using Unity.Entities;
 using UnityEngine;
 
@@ -12,6 +11,7 @@ namespace RTS.Gameplay.UnitSelection
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent(entity, new SelectedUnitTag());
+                SetComponentEnabled<SelectedUnitTag>(entity, false);
             }
         }
     }

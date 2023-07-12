@@ -24,13 +24,14 @@ namespace RTS.Gameplay.UnitSelection
             // There's some duplication here
             var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
 
-            if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
-            {
-                return;
-            }
-            
             var input = SystemAPI.GetSingleton<InputSingleton>();
             var selection = SystemAPI.GetSingletonRW<SelectionSingleton>();
+            
+            if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
+            {
+                selection.ValueRW.IsActive = false;
+                return;
+            }
             
             if (input.IsPrimaryActionPressed && !selection.ValueRO.IsActive)
             {

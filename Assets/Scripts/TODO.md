@@ -8,4 +8,5 @@
 [] Archetypes?
 [] Layers
 [] Custom bootstrap and system initialization
-[] Blob assets for configs
+[x] Blob assets for configs
+[] Merge units and buildings

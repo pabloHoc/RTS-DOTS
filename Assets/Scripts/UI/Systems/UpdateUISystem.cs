@@ -1,12 +1,11 @@
-using RTS.Gameplay.Buildings;
-using RTS.Gameplay.Players;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
+using RTS.Gameplay.UnitBuilding;
+using RTS.Gameplay.Units;
 using RTS.Gameplay.UnitSelection;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
 
 namespace RTS.UI
 {
@@ -23,6 +22,7 @@ namespace RTS.UI
         public void OnUpdate(ref SystemState state)
         {
             UpdateResources(ref state);
+            UpdateUnitProductionMenu(ref state);
         }
 
         private void UpdateResources(ref SystemState state)
@@ -40,17 +40,17 @@ namespace RTS.UI
                 }
             }
             
-            GameUI.Instance.UpdateResources(resourceText);
+            GameUI.Instance.UpdateResourceLabels(resourceText);
         }
 
-        private void UpdateUnitProductionMenu()
+        private void UpdateUnitProductionMenu(ref SystemState state)
         {
-            var buildingDatabase = SystemAPI.GetSingleton<BuildingDatabaseSingleton>();
-            
-            foreach (var (_, building) in SystemAPI.Query<SelectedUnitTag, BuildingComponent>())
+            ref var unitDatabase = ref SystemAPI.GetSingleton<UnitDatabaseSingleton>().Data.Value;
+
+            foreach (var (_, building) in SystemAPI.Query<SelectedUnitTag, BuilderComponent>())
             {
-                ref var buildingData = ref buildingDatabase.Data.Value.Buildings[building.Index];
-                buildingData
+                // ref var buildingData = ref unitDatabase.Units[building.Index];
+                // GameUI.Instance.UpdateUnitButtons(buildingData.UnitIds.ToArray());
             }
         }
 

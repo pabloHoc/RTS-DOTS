@@ -1,4 +1,5 @@
-using RTS.Gameplay.Buildings;
+using RTS.Data;
+using RTS.Gameplay.Units;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -51,8 +52,7 @@ namespace RTS.UI
         private void GenerateBuildingButtons()
         {
             var buildingBox = _root.Q<GroupBox>("BuildingGroupBox");
-            var buildingsData = GameObject.Find("BuildingsConfig")
-                .GetComponent<BuildingDatabaseAuthoring>().BuildingsData;
+            var buildingsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().DataContainer.UnitsData.Buildings;
 
             for (var i = 0; i < buildingsData.Count; i++)
             {
@@ -93,13 +93,41 @@ namespace RTS.UI
             BuildingIndex = i;
         }
 
+        private void HandleBuildUnitClicked(int i)
+        {
+            
+        }
+
         // Updates
         
-        public void UpdateResources(string resources)
+        public void UpdateResourceLabels(string resources)
         {
             _resourcesLabel.text = resources;
         }
 
+        public void UpdateUnitButtons(int[] unitIds)
+        {
+            var unitBox = _root.Q<GroupBox>("UnitGroupBox");
+            unitBox.Clear();
+            // cache this
+            var unitsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().DataContainer.UnitsData.Buildings;
+
+            for (var i = 0; i < unitsData.Count; i++)
+            {
+                var unitButton = new Button
+                {
+                    text = unitsData[i].Name,
+                    userData = new
+                    {
+                        UnitIndex = i
+                    }
+                };
+                var temp = i;
+                unitButton.clicked += () => HandleBuildUnitClicked(temp);
+                unitBox.Add(unitButton);
+            }
+        }
+        
         public void ShowUnitProductionMenu()
         {
             _unitProductionGroupBox.visible = true;

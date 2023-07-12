@@ -5,35 +5,21 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.Buildings
+namespace RTS.Gameplay.Units
 {
     public class UnitComponentAuthoring : MonoBehaviour
     {
-        public int Index;
-        public string Name;
-        public float BuildingTime;
-        public List<GameObject> Units;
+        public int UnitId;
 
-        public class BuildingComponentBaker : Baker<BuildingComponentAuthoring>
+        public class UnitComponentBaker : Baker<UnitComponentAuthoring>
         {
-            public override void Bake(BuildingComponentAuthoring authoring)
+            public override void Bake(UnitComponentAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                var entityBuffer = AddBuffer<EntityBufferElement>(entity);
 
-                foreach (var unitGo in authoring.Units)
+                AddComponent(entity, new UnitComponent
                 {
-                    entityBuffer.Add(new EntityBufferElement
-                    {
-                        Entity = GetEntity(unitGo, TransformUsageFlags.Dynamic)
-                    });
-                }
-                
-                AddComponent(entity, new BuildingComponent
-                {
-                    Index = authoring.Index,
-                    Name = authoring.Name,
-                    BuildingTime = authoring.BuildingTime
+                    UnitId = authoring.UnitId
                 });
             }
         }

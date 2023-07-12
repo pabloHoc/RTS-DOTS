@@ -141,7 +141,7 @@ Transform:
   m_Children:
   - {fileID: 7635007591782156907}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &355321558137289418
 MeshFilter:
@@ -202,14 +202,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4643711615907867271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d52f5431cde435ca5cf34a252eea5fa, type: 3}
+  m_Script: {fileID: 11500000, guid: e4e06c51baa34e989cf8534acb7f2685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Index: 0
-  Name: Barrack
+  Name: 
   BuildingTime: 0
-  Units:
-  - {fileID: 3844227185308589161, guid: 63bf851fcb8bb4883b295a6e5124f95b, type: 3}
+  Units: []
 --- !u!114 &3498350439656945934
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using RTS.Common;
 using RTS.Gameplay.Players.Singletons;
-using RTS.Gameplay.Resources;
+using RTS.Gameplay.Units;
 using RTS.GameState;
 using RTS.Input;
 using RTS.SystemGroups;
@@ -11,17 +11,17 @@ using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
-namespace RTS.Gameplay.Buildings
+namespace RTS.Gameplay.UnitBuilding
 {
     [UpdateInGroup(typeof(GameplaySystemGroup))]
-    public partial struct BuildingConstructionSystem : ISystem
+    public partial struct UnitConstructionSystem : ISystem
     {
         private float _currentBuildingRotation;
         
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BuildingDatabaseSingleton>();
+            state.RequireForUpdate<UnitDatabaseSingleton>();
             state.RequireForUpdate<GameStateSingleton>();
             state.RequireForUpdate<InputSingleton>();
         }
@@ -30,9 +30,9 @@ namespace RTS.Gameplay.Buildings
         {
             var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
 
-            var buildingDatabase = SystemAPI.GetSingleton<BuildingDatabaseSingleton>().Data;
-            var buildingRepository = SystemAPI.GetSingletonEntity<BuildingDatabaseSingleton>();
-            var buildingEntityBuffer = SystemAPI.GetBuffer<EntityBufferElement>(buildingRepository);
+            var unitDatabase = SystemAPI.GetSingleton<UnitDatabaseSingleton>().Data;
+            var unitRepository = SystemAPI.GetSingletonEntity<UnitDatabaseSingleton>();
+            var unitEntitiesBuffer = SystemAPI.GetBuffer<EntityBufferElement>(unitRepository);
             
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
             var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
@@ -44,13 +44,13 @@ namespace RTS.Gameplay.Buildings
             if (GameUI.Instance.BuildButtonClicked && !SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, true);
-                var buildingEntity = state.EntityManager.Instantiate(buildingEntityBuffer[GameUI.Instance.BuildingIndex].Entity);
-                ecb.AddComponent<BuildingPositioningTag>(buildingEntity);
+                var buildingEntity = state.EntityManager.Instantiate(unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity);
+                ecb.AddComponent<UnitPositioningTag>(buildingEntity);
             }
             
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
-                var building = buildingEntityBuffer[GameUI.Instance.BuildingIndex].Entity;
+                var building = unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity;
                     
                 _currentBuildingRotation += input.ScrollAmount * 2f;
                 
@@ -58,12 +58,12 @@ namespace RTS.Gameplay.Buildings
                 {
                     Ecb = ecb.AsParallelWriter(),
                     Player = player,
-                    Building = building,
-                    BuildingPosition = input.CursorWorldPosition,
-                    BuildingRotation = _currentBuildingRotation,
-                    BuildBuilding = input.WasPrimaryActionPressedThisFrame,
+                    Unit = building,
+                    UnitPosition = input.CursorWorldPosition,
+                    UnitRotation = _currentBuildingRotation,
+                    BuildUnit = input.WasPrimaryActionPressedThisFrame,
                     CancelBuilding = input.IsCancelActionPressed,
-                    BuildingDatabase = buildingDatabase
+                    UnitDatabase = unitDatabase
                 };
 
                 if (input.IsCancelActionPressed)
@@ -82,18 +82,18 @@ namespace RTS.Gameplay.Buildings
         }
     }
     
-        [WithAll(typeof(BuildingComponent), typeof(BuildingPositioningTag))]
+        [WithAll(typeof(UnitPositioningTag))]
         [BurstCompile]
         public partial struct BuildBuildingJob : IJobEntity
         {
             public EntityCommandBuffer.ParallelWriter Ecb;
             public Entity Player;
-            public Entity Building;
-            public float3 BuildingPosition;
-            public bool BuildBuilding;
+            public Entity Unit;
+            public float3 UnitPosition;
+            public bool BuildUnit;
             public bool CancelBuilding;
-            public float BuildingRotation;
-            public BlobAssetReference<BuildingsData> BuildingDatabase;
+            public float UnitRotation;
+            public BlobAssetReference<UnitsBlobAsset> UnitDatabase;
 
             [BurstCompile]
             public void Execute(
@@ -102,27 +102,24 @@ namespace RTS.Gameplay.Buildings
                 ref LocalTransform transform,
                 in WorldRenderBounds renderBounds)
             {
-                transform.Position = BuildingPosition;
+                transform.Position = UnitPosition;
                 transform.Position.y = renderBounds.Value.Center.y;
-                transform.Rotation = quaternion.RotateY(BuildingRotation); 
+                transform.Rotation = quaternion.RotateY(UnitRotation); 
                 
-                if (BuildBuilding)
+                if (BuildUnit)
                 {
-                    ref var buildingData = ref BuildingDatabase.Value.Buildings[0];
-                    
-                    var instantiatedBuilding = Ecb.Instantiate(index, Building);
+                    var instantiatedUnit = Ecb.Instantiate(index, Unit);
                     // Add transform
-                    Ecb.AddComponent<LocalTransform>(index, instantiatedBuilding);
-                    Ecb.SetComponent(index, instantiatedBuilding, transform);
+                    Ecb.AddComponent<LocalTransform>(index, instantiatedUnit);
+                    Ecb.SetComponent(index, instantiatedUnit, transform);
                     // Add ownership
-                    Ecb.AddComponent<EntityOwnerComponent>(index, instantiatedBuilding);
-                    Ecb.SetComponent(index, instantiatedBuilding, new EntityOwnerComponent
+                    Ecb.AddComponent<EntityOwnerComponent>(index, instantiatedUnit);
+                    Ecb.SetComponent(index, instantiatedUnit, new EntityOwnerComponent
                     {
                         Entity = Player
                     });
-
                     // Add created tag
-                    Ecb.AddComponent<EntityCreatedTag>(index, instantiatedBuilding);
+                    Ecb.AddComponent<EntityCreatedTag>(index, instantiatedUnit);
                 }
 
                 if (CancelBuilding)
