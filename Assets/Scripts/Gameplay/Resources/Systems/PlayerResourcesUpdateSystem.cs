@@ -71,10 +71,8 @@ namespace RTS.Gameplay.Resources
                     // TODO: add a util for this
                     case ResourceType.AdditiveModifier:
                     {
-                        Debug.Log($"HERE A {resource.Name} {resource.Value}");
                         if (!additiveModifiers.TryAdd(resource.Name, resource.Value))
                         {
-                            Debug.Log("HERE B");
                             var currentValue = additiveModifiers[resource.Name];
                             additiveModifiers.Remove(resource.Name);
                             additiveModifiers.TryAdd(resource.Name, currentValue + resource.Value);

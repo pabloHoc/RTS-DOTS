@@ -1,7 +1,8 @@
+using RTS.Camera;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Camera
+namespace RTS.Authoring.Camera
 {
     public class CameraSettingsSingletonAuthoring : MonoBehaviour
     {

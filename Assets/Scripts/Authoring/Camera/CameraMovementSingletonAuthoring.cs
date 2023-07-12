@@ -1,9 +1,10 @@
 using System;
+using RTS.Camera;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace RTS.Camera
+namespace RTS.Authoring.Camera
 {
     public class CameraMovementSingletonAuthoring : MonoBehaviour
     {
