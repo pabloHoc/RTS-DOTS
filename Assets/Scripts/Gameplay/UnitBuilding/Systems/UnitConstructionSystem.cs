@@ -1,3 +1,4 @@
+using RTS.Authoring.Gameplay.Unit;
 using RTS.Common;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Units;

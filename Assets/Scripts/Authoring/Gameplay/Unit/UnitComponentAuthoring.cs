@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-using RTS.Common;
-using RTS.Gameplay.Resources;
-using Unity.Collections;
+using RTS.Gameplay.Units;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.Units
+namespace RTS.Authoring.Gameplay.Unit
 {
     public class UnitComponentAuthoring : MonoBehaviour
     {
-        public int UnitId;
+        public int DatabaseIndex;
 
         public class UnitComponentBaker : Baker<UnitComponentAuthoring>
         {
@@ -19,7 +16,7 @@ namespace RTS.Gameplay.Units
 
                 AddComponent(entity, new UnitComponent
                 {
-                    UnitId = authoring.UnitId
+                    DatabaseIndex = authoring.DatabaseIndex
                 });
             }
         }

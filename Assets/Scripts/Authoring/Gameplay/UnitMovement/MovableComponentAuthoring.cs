@@ -1,7 +1,8 @@
+using RTS.Gameplay.UnitMovement;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.UnitMovement
+namespace RTS.Authoring.Gameplay.UnitMovement
 {
     public class MovableComponentAuthoring : MonoBehaviour
     {

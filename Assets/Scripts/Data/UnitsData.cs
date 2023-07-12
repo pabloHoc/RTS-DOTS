@@ -18,6 +18,7 @@ namespace RTS.Data
         public int BuildTime;
         public List<ResourceData> Cost;
         public GameObject Prefab;
+        public List<int> BuildableUnitIds;
     }
     
     [CreateAssetMenu(fileName = "UnitsData", menuName = "RTS/Units Data", order = 0)]

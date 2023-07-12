@@ -1,3 +1,4 @@
+using RTS.Authoring.Gameplay.Unit;
 using RTS.Common;
 using RTS.Gameplay.Resources;
 using RTS.Gameplay.Units;
@@ -56,7 +57,7 @@ namespace RTS.Gameplay.UnitBuilding
             in UnitComponent unit
         )
         {
-            ref var buildingData = ref UnitDatabase.Value.Units[unit.UnitId];
+            ref var buildingData = ref UnitDatabase.Value.Units[unit.DatabaseIndex];
 
             for (var i = 0; i < buildingData.Cost.Length; i++)
             {

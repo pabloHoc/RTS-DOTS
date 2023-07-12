@@ -1,7 +1,8 @@
+using RTS.Common;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Common
+namespace RTS.Authoring.Common
 {
     public class SyncTransformComponentAuthoring : MonoBehaviour
     {

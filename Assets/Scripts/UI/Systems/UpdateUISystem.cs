@@ -1,3 +1,4 @@
+using RTS.Common;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
 using RTS.Gameplay.UnitBuilding;
@@ -45,12 +46,9 @@ namespace RTS.UI
 
         private void UpdateUnitProductionMenu(ref SystemState state)
         {
-            ref var unitDatabase = ref SystemAPI.GetSingleton<UnitDatabaseSingleton>().Data.Value;
-
-            foreach (var (_, building) in SystemAPI.Query<SelectedUnitTag, BuilderComponent>())
+            foreach (var (unit, _, _) in SystemAPI.Query<UnitComponent, SelectedUnitTag, BuilderComponent>())
             {
-                // ref var buildingData = ref unitDatabase.Units[building.Index];
-                // GameUI.Instance.UpdateUnitButtons(buildingData.UnitIds.ToArray());
+                GameUI.Instance.UpdateUnitButtons(unit.DatabaseIndex);
             }
         }
 

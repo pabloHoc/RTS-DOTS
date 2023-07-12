@@ -1,8 +1,9 @@
+using RTS.Gameplay.UnitMovement;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace RTS.Gameplay.UnitMovement
+namespace RTS.Authoring.Gameplay.UnitMovement
 {
     public class MoveToComponentAuthoring : MonoBehaviour
     {

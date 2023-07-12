@@ -2,7 +2,7 @@ using RTS.Gameplay.UnitSelection;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.UnitSelection
+namespace RTS.Authoring.Gameplay.UnitSelection
 {
     public class SelectableUnitTagAuthoring : MonoBehaviour
     {

@@ -1,3 +1,4 @@
+using RTS.Authoring.Gameplay.Unit;
 using RTS.Data;
 using Unity.Entities;
 

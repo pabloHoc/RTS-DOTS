@@ -20,6 +20,7 @@ MonoBehaviour:
       Value: 100
     Prefab: {fileID: 4643711615907867271, guid: ecc544369cc0a4f5cb98662a6c4a9cff,
       type: 3}
+    BuildableUnitIds: 00000000
   - Name: House
     BuildTime: 0
     Cost:
@@ -27,6 +28,7 @@ MonoBehaviour:
       Value: 100
     Prefab: {fileID: 4155165053055170188, guid: b026dd603bca44db28e226cdf1da66fa,
       type: 3}
+    BuildableUnitIds: 
   Units:
   - Name: Worker
     BuildTime: 0
@@ -35,3 +37,4 @@ MonoBehaviour:
       Value: 100
     Prefab: {fileID: 3844227185308589161, guid: 63bf851fcb8bb4883b295a6e5124f95b,
       type: 3}
+    BuildableUnitIds: 

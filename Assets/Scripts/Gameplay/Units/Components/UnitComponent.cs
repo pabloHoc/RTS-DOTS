@@ -5,8 +5,7 @@ namespace RTS.Gameplay.Units
 {
     public struct UnitComponent : IComponentData
     {
-        // Building index in building database
-        public int UnitId;
+        public int DatabaseIndex;
         public FixedString32Bytes Name;
         public float BuildingTime;
     }

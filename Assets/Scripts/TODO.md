@@ -9,4 +9,5 @@
 [] Layers
 [] Custom bootstrap and system initialization
 [x] Blob assets for configs
-[] Merge units and buildings
+[x] Merge units and buildings
+[] Review TransformUsageFlags in authoring

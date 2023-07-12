@@ -1,5 +1,8 @@
+using RTS.Authoring.Gameplay.Unit;
+using RTS.Common;
 using RTS.Data;
 using RTS.Gameplay.Units;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -52,7 +55,7 @@ namespace RTS.UI
         private void GenerateBuildingButtons()
         {
             var buildingBox = _root.Q<GroupBox>("BuildingGroupBox");
-            var buildingsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().DataContainer.UnitsData.Buildings;
+            var buildingsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().UnitsData.Buildings;
 
             for (var i = 0; i < buildingsData.Count; i++)
             {
@@ -95,8 +98,8 @@ namespace RTS.UI
 
         private void HandleBuildUnitClicked(int i)
         {
-            
-        }
+            Debug.Log($"Build Unit {i}");
+        }   
 
         // Updates
         
@@ -105,23 +108,31 @@ namespace RTS.UI
             _resourcesLabel.text = resources;
         }
 
-        public void UpdateUnitButtons(int[] unitIds)
+        // TODO: we shouldn't have buffer elements here
+        public void UpdateUnitButtons(int builderUnitId)
         {
             var unitBox = _root.Q<GroupBox>("UnitGroupBox");
             unitBox.Clear();
             // cache this
-            var unitsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().DataContainer.UnitsData.Buildings;
+            var unitDatabase = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().UnitsData;
+            var builderUnitData = unitDatabase.Buildings[builderUnitId];
 
-            for (var i = 0; i < unitsData.Count; i++)
+            Debug.Log($"UNIT SELECTED {builderUnitData.BuildableUnitIds.Count}");
+
+            for (var i = 0; i < builderUnitData.BuildableUnitIds.Count; i++)
             {
+                var buildableUnitId = builderUnitData.BuildableUnitIds[i];
+                var buildableUnitData = unitDatabase.Units[buildableUnitId];
+                
                 var unitButton = new Button
                 {
-                    text = unitsData[i].Name,
+                    text = buildableUnitData.Name,
                     userData = new
                     {
-                        UnitIndex = i
+                        UnitIndex = buildableUnitData
                     }
                 };
+                
                 var temp = i;
                 unitButton.clicked += () => HandleBuildUnitClicked(temp);
                 unitBox.Add(unitButton);

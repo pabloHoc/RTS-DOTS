@@ -85,7 +85,6 @@ namespace RTS.Gameplay.Resources
             foreach (var entry in additiveModifiers)
             {
                 var currentValue = stored[entry.Key];
-                Debug.Log($"HERE C {entry.Key} Current: ${currentValue} New: ${entry.Value}");
                 stored.Remove(entry.Key);
                 stored.Add(entry.Key, currentValue + entry.Value);
             }

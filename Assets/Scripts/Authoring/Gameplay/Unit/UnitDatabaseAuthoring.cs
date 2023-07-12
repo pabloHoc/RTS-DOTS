@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using RTS.Common;
 using RTS.Data;
+using RTS.Gameplay.Units;
 using RTS.Utils;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 
-namespace RTS.Gameplay.Units
+namespace RTS.Authoring.Gameplay.Unit
 {
     public struct ResourceBlobAsset
     {
@@ -19,6 +20,7 @@ namespace RTS.Gameplay.Units
         public FixedString32Bytes Name;
         public int BuildTime;
         public BlobArray<ResourceBlobAsset> Cost;
+        public BlobArray<int> BuildableUnitIds;
     }
     
     public struct UnitsBlobAsset {
@@ -27,7 +29,7 @@ namespace RTS.Gameplay.Units
 
     public class UnitDatabaseAuthoring : MonoBehaviour
     {
-        public UnitsDataContainer DataContainer;
+        public UnitsData UnitsData;
 
         public class UnitDatabaseBaker : Baker<UnitDatabaseAuthoring>
         {
@@ -35,21 +37,21 @@ namespace RTS.Gameplay.Units
             {
                 var entity = GetEntity(TransformUsageFlags.None);
                 
-                var blobReference = BlobAssetUtils.BuildBlobAsset(authoring.DataContainer.UnitsData, 
-                    delegate(ref BlobBuilder blobBuilder, ref UnitsBlobAsset blobAsset, UnitsData data)
+                var blobReference = BlobAssetUtils.BuildBlobAsset(authoring.UnitsData, 
+                    delegate(ref BlobBuilder blobBuilder, ref UnitsBlobAsset blobAsset, UnitsData authoringData)
                 {
-                    var entitiesBuffer = AddBuffer<EntityBufferElement>(entity);
-                    var mergedUnitsData = new List<UnitData>();
-                    mergedUnitsData.AddRange(data.Buildings);
-                    mergedUnitsData.AddRange(data.Units);
+                    var unitsAuthoringData = new List<UnitData>();
+                    unitsAuthoringData.AddRange(authoringData.Buildings);
+                    unitsAuthoringData.AddRange(authoringData.Units);
 
                     var unitsDataArray = blobBuilder.Allocate(
                         ref blobAsset.Units,
-                        mergedUnitsData.Count
+                        unitsAuthoringData.Count
                     );
                     
-                    PopulateBlobArray(mergedUnitsData, ref blobBuilder, unitsDataArray);
-                    PopulateEntitiesBuffer(mergedUnitsData, entitiesBuffer);
+                    PopulateBlobArray(unitsAuthoringData, ref blobBuilder, unitsDataArray);
+                    AddEntitiesBuffer(entity, unitsAuthoringData);
+                    AddBuildableEntityIdsBuffer(entity, unitsAuthoringData);
                 });
                
                 AddBlobAsset(ref blobReference, out var hash);
@@ -60,44 +62,76 @@ namespace RTS.Gameplay.Units
             }
 
             private void PopulateBlobArray(
-                List<UnitData> unitData, 
+                List<UnitData> unitsAuthoringData, 
                 ref BlobBuilder blobBuilder, 
                 BlobBuilderArray<UnitBlobAsset> blobBuilderArray)
             {
-                for (var i = 0; i < unitData.Count; i++)
+                for (var i = 0; i < unitsAuthoringData.Count; i++)
                 {
-                    var dataAuthoring = unitData[i];
+                    var unitAuthoringData = unitsAuthoringData[i];
 
                     blobBuilderArray[i] = new UnitBlobAsset
                     {
-                        Name = dataAuthoring.Name
+                        Name = unitAuthoringData.Name
                     };
+                    
+                    // Add resources
                     
                     var resourcesDataArray = blobBuilder.Allocate(
                         ref blobBuilderArray[i].Cost,
-                        dataAuthoring.Cost.Count
+                        unitAuthoringData.Cost.Count
                     );
 
-                    for (var j = 0; j < dataAuthoring.Cost.Count; j++)
+                    for (var j = 0; j < unitAuthoringData.Cost.Count; j++)
                     {
-                        var authoringResourceData = dataAuthoring.Cost[j];
+                        var resourceAuthoringData = unitAuthoringData.Cost[j];
                         resourcesDataArray[j] = new ResourceBlobAsset
                         {
-                            Name = authoringResourceData.Name,
-                            Value = authoringResourceData.Value
+                            Name = resourceAuthoringData.Name,
+                            Value = resourceAuthoringData.Value
                         };
+                    }
+                    
+                    // Add buildable unit ids
+                    
+                    var buildableUnitIdsDataArray = blobBuilder.Allocate(
+                        ref blobBuilderArray[i].BuildableUnitIds,
+                        unitAuthoringData.BuildableUnitIds.Count
+                    );
+
+                    for (var j = 0; j < unitAuthoringData.BuildableUnitIds.Count; j++)
+                    {
+                        buildableUnitIdsDataArray[j] = unitAuthoringData.BuildableUnitIds[j];
                     }
                 }
             }
 
-            private void PopulateEntitiesBuffer(List<UnitData> unitData, DynamicBuffer<EntityBufferElement> entitiesBuffer)
+            private void AddEntitiesBuffer(Entity entity, List<UnitData> data)
             {
-                foreach (var dataAuthoring in unitData)
+                var entitiesBuffer = AddBuffer<EntityBufferElement>(entity);
+
+                foreach (var dataAuthoring in data)
                 {
                     entitiesBuffer.Add(new EntityBufferElement
                     {
                         Entity = GetEntity(dataAuthoring.Prefab, TransformUsageFlags.Dynamic)
                     });
+                }
+            }
+            
+            private void AddBuildableEntityIdsBuffer(Entity entity, List<UnitData> data)
+            {
+                var entitiesBuffer = AddBuffer<EntityIdBufferElement>(entity);
+
+                foreach (var dataAuthoring in data)
+                {
+                    foreach (var buildableUnitId in dataAuthoring.BuildableUnitIds)
+                    {
+                        entitiesBuffer.Add(new EntityIdBufferElement
+                        {
+                            EntityId = buildableUnitId
+                        });
+                    }
                 }
             }
         }
