@@ -40,18 +40,13 @@ namespace RTS.Authoring.Gameplay.Unit
                 var blobReference = BlobAssetUtils.BuildBlobAsset(authoring.UnitsData, 
                     delegate(ref BlobBuilder blobBuilder, ref UnitsBlobAsset blobAsset, UnitsData authoringData)
                 {
-                    var unitsAuthoringData = new List<UnitData>();
-                    unitsAuthoringData.AddRange(authoringData.Buildings);
-                    unitsAuthoringData.AddRange(authoringData.Units);
-
                     var unitsDataArray = blobBuilder.Allocate(
                         ref blobAsset.Units,
-                        unitsAuthoringData.Count
+                        authoringData.Units.Count
                     );
                     
-                    PopulateBlobArray(unitsAuthoringData, ref blobBuilder, unitsDataArray);
-                    AddEntitiesBuffer(entity, unitsAuthoringData);
-                    AddBuildableEntityIdsBuffer(entity, unitsAuthoringData);
+                    PopulateBlobArray(authoringData.Units, ref blobBuilder, unitsDataArray);
+                    AddEntitiesBuffer(entity, authoringData.Units);
                 });
                
                 AddBlobAsset(ref blobReference, out var hash);
@@ -116,22 +111,6 @@ namespace RTS.Authoring.Gameplay.Unit
                     {
                         Entity = GetEntity(dataAuthoring.Prefab, TransformUsageFlags.Dynamic)
                     });
-                }
-            }
-            
-            private void AddBuildableEntityIdsBuffer(Entity entity, List<UnitData> data)
-            {
-                var entitiesBuffer = AddBuffer<EntityIdBufferElement>(entity);
-
-                foreach (var dataAuthoring in data)
-                {
-                    foreach (var buildableUnitId in dataAuthoring.BuildableUnitIds)
-                    {
-                        entitiesBuffer.Add(new EntityIdBufferElement
-                        {
-                            EntityId = buildableUnitId
-                        });
-                    }
                 }
             }
         }

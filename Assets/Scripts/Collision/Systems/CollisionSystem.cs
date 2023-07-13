@@ -62,7 +62,7 @@ public void OnUpdate(ref SystemState state)
 
                     if (haveHit && !hit.Entity.Equals(entity) && SystemAPI.HasComponent<SelectableUnitTag>(hit.Entity))
                     {
-                        Debug.Log($"Entity: {entity.Index} | Entity Hit: {hit.Entity.Index}");
+                        // Debug.Log($"Entity: {entity.Index} | Entity Hit: {hit.Entity.Index}");
                     }
                 }
             }

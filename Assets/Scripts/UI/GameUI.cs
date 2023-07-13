@@ -18,6 +18,8 @@ namespace RTS.UI
         private VisualElement _root;
         private Label _resourcesLabel;
         private GroupBox _unitProductionGroupBox;
+
+        private int _currentSelectedUnitId = -1;
         
         private void Awake() 
         { 
@@ -39,8 +41,8 @@ namespace RTS.UI
             _root.RegisterCallback<MouseLeaveEvent>(HandleMouseLeaveUI);
 
             _resourcesLabel = _root.Q<Label>("ResourcesLabel");
-            _unitProductionGroupBox = _root.Q<GroupBox>("UnitProductionGroupBox");
-
+            _unitProductionGroupBox = _root.Q<GroupBox>("BuildingGroupBox");
+            
             GenerateUI();
         }
         
@@ -48,34 +50,6 @@ namespace RTS.UI
 
         private void GenerateUI()
         {
-            GenerateBuildingButtons();
-            GenerateResourceLabels();
-        }
-
-        private void GenerateBuildingButtons()
-        {
-            var buildingBox = _root.Q<GroupBox>("BuildingGroupBox");
-            var buildingsData = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().UnitsData.Buildings;
-
-            for (var i = 0; i < buildingsData.Count; i++)
-            {
-                var buildingButton = new Button
-                {
-                    text = buildingsData[i].Name,
-                    userData = new
-                    {
-                        BuildingIndex = i
-                    }
-                };
-                var temp = i;
-                buildingButton.clicked += () => HandleBuildButtonClicked(temp);
-                buildingBox.Add(buildingButton);
-            }
-        }
-        
-        private void GenerateResourceLabels()
-        {
-            
         }
         
         // Handlers
@@ -92,14 +66,10 @@ namespace RTS.UI
 
         private void HandleBuildButtonClicked(int i)
         {
+            Debug.Log($"CLICKED {i}");
             BuildButtonClicked = true;
             BuildingIndex = i;
         }
-
-        private void HandleBuildUnitClicked(int i)
-        {
-            Debug.Log($"Build Unit {i}");
-        }   
 
         // Updates
         
@@ -111,13 +81,17 @@ namespace RTS.UI
         // TODO: we shouldn't have buffer elements here
         public void UpdateUnitButtons(int builderUnitId)
         {
-            var unitBox = _root.Q<GroupBox>("UnitGroupBox");
-            unitBox.Clear();
+            if (builderUnitId == _currentSelectedUnitId)
+            {
+                return;
+            }
+
+            _currentSelectedUnitId = builderUnitId;
+            
+            _unitProductionGroupBox.Clear();
             // cache this
             var unitDatabase = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().UnitsData;
-            var builderUnitData = unitDatabase.Buildings[builderUnitId];
-
-            Debug.Log($"UNIT SELECTED {builderUnitData.BuildableUnitIds.Count}");
+            var builderUnitData = unitDatabase.Units[builderUnitId];
 
             for (var i = 0; i < builderUnitData.BuildableUnitIds.Count; i++)
             {
@@ -133,10 +107,16 @@ namespace RTS.UI
                     }
                 };
                 
-                var temp = i;
-                unitButton.clicked += () => HandleBuildUnitClicked(temp);
-                unitBox.Add(unitButton);
+                var temp = buildableUnitId;
+                unitButton.clicked += () => HandleBuildButtonClicked(temp);
+                _unitProductionGroupBox.Add(unitButton);
             }
+        }
+
+        public void ClearUnitProductionMenu()
+        {
+            _unitProductionGroupBox.Clear();
+            _currentSelectedUnitId = -1;
         }
         
         public void ShowUnitProductionMenu()

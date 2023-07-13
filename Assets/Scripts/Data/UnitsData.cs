@@ -24,7 +24,6 @@ namespace RTS.Data
     [CreateAssetMenu(fileName = "UnitsData", menuName = "RTS/Units Data", order = 0)]
     public class UnitsData : ScriptableObject
     {
-        public List<UnitData> Buildings;
         public List<UnitData> Units;
     }
 }

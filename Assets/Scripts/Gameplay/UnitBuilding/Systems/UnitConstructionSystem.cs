@@ -11,6 +11,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
+using UnityEngine;
 
 namespace RTS.Gameplay.UnitBuilding
 {
@@ -45,8 +46,8 @@ namespace RTS.Gameplay.UnitBuilding
             if (GameUI.Instance.BuildButtonClicked && !SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, true);
-                var buildingEntity = state.EntityManager.Instantiate(unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity);
-                ecb.AddComponent<UnitPositioningTag>(buildingEntity);
+                var entityToBuild = state.EntityManager.Instantiate(unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity);
+                ecb.AddComponent<UnitPositioningTag>(entityToBuild);
             }
             
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))

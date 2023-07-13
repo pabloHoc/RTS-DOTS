@@ -7,6 +7,7 @@ using RTS.Gameplay.UnitSelection;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
+using UnityEngine;
 
 namespace RTS.UI
 {
@@ -46,9 +47,17 @@ namespace RTS.UI
 
         private void UpdateUnitProductionMenu(ref SystemState state)
         {
+            var isUnitSelected = false;
+            
             foreach (var (unit, _, _) in SystemAPI.Query<UnitComponent, SelectedUnitTag, BuilderComponent>())
             {
                 GameUI.Instance.UpdateUnitButtons(unit.DatabaseIndex);
+                isUnitSelected = true;
+            }
+
+            if (!isUnitSelected)
+            {
+                GameUI.Instance.ClearUnitProductionMenu();
             }
         }
 
