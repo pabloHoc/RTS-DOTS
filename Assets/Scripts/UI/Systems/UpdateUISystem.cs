@@ -1,13 +1,11 @@
-using RTS.Common;
+using RTS.Gameplay.Building;
 using RTS.Gameplay.Players.Singletons;
 using RTS.Gameplay.Resources;
-using RTS.Gameplay.UnitBuilding;
+using RTS.Gameplay.Selection;
 using RTS.Gameplay.Units;
-using RTS.Gameplay.UnitSelection;
 using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Entities;
-using UnityEngine;
 
 namespace RTS.UI
 {
@@ -49,7 +47,7 @@ namespace RTS.UI
         {
             var isUnitSelected = false;
             
-            foreach (var (unit, _, _) in SystemAPI.Query<UnitComponent, SelectedUnitTag, BuilderComponent>())
+            foreach (var (unit, _, _) in SystemAPI.Query<UnitComponent, SelectedTag, BuilderComponent>())
             {
                 GameUI.Instance.UpdateUnitButtons(unit.DatabaseIndex);
                 isUnitSelected = true;

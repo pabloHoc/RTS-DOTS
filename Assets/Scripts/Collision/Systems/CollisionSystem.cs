@@ -1,11 +1,10 @@
-using RTS.Gameplay.UnitSelection;
+using RTS.Gameplay.Selection;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace RTS.Collision
 {
@@ -27,7 +26,7 @@ public void OnUpdate(ref SystemState state)
             var physicsWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
             var collisionWorld = physicsWorld.CollisionWorld;
 
-            foreach (var (_, transform, entity) in SystemAPI.Query<SelectableUnitTag, LocalTransform>().WithEntityAccess())
+            foreach (var (_, transform, entity) in SystemAPI.Query<SelectableTag, LocalTransform>().WithEntityAccess())
             {
                 // Approach 1
                 
@@ -60,7 +59,7 @@ public void OnUpdate(ref SystemState state)
                     var hit = new ColliderCastHit();
                     var haveHit = collisionWorld.CastCollider(input, out hit);
 
-                    if (haveHit && !hit.Entity.Equals(entity) && SystemAPI.HasComponent<SelectableUnitTag>(hit.Entity))
+                    if (haveHit && !hit.Entity.Equals(entity) && SystemAPI.HasComponent<SelectableTag>(hit.Entity))
                     {
                         // Debug.Log($"Entity: {entity.Index} | Entity Hit: {hit.Entity.Index}");
                     }

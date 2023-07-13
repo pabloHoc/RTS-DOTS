@@ -89,7 +89,7 @@ namespace RTS.UI
             
             _unitProductionGroupBox.Clear();
             // cache this
-            var unitDatabase = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseAuthoring>().UnitsData;
+            var unitDatabase = GameObject.Find("UnitDatabase").GetComponent<UnitDatabaseComponentAuthoring>().UnitsData;
             var builderUnitData = unitDatabase.Units[builderUnitId];
 
             for (var i = 0; i < builderUnitData.BuildableUnitIds.Count; i++)
