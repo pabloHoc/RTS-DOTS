@@ -66,7 +66,6 @@ namespace RTS.UI
 
         private void HandleBuildButtonClicked(int i)
         {
-            Debug.Log($"CLICKED {i}");
             BuildButtonClicked = true;
             BuildingIndex = i;
         }

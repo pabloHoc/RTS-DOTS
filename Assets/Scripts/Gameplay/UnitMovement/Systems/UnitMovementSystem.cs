@@ -58,13 +58,15 @@ namespace RTS.Gameplay.UnitMovement
             in MovableComponent movable,
             in WorldRenderBounds renderBounds)
         {
-            var distance = math.distance(transform.Position, moveTo.TargetPosition);
-            var direction = math.normalize(moveTo.TargetPosition - transform.Position);
+            var targetPosition =
+                new float3(moveTo.TargetPosition.x, renderBounds.Value.Center.y, moveTo.TargetPosition.z);
+            
+            var distance = math.distance(transform.Position, targetPosition);
+            var direction = math.normalize(targetPosition - transform.Position);
                 
             if (distance > 0.1f)
             {
                 transform.Position += direction * movable.Speed * DeltaTime;
-                transform.Position.y = renderBounds.Value.Center.y;
             }
             else
             {

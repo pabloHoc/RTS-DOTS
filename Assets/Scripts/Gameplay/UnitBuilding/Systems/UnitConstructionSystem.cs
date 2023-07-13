@@ -1,6 +1,7 @@
 using RTS.Authoring.Gameplay.Unit;
 using RTS.Common;
 using RTS.Gameplay.Players.Singletons;
+using RTS.Gameplay.UnitMovement;
 using RTS.Gameplay.Units;
 using RTS.GameState;
 using RTS.Input;
@@ -47,7 +48,21 @@ namespace RTS.Gameplay.UnitBuilding
             {
                 SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, true);
                 var entityToBuild = state.EntityManager.Instantiate(unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity);
-                ecb.AddComponent<UnitPositioningTag>(entityToBuild);
+
+                if (SystemAPI.HasComponent<PositionableTag>(entityToBuild))
+                {
+                    ecb.AddComponent<UnitPositioningTag>(entityToBuild);
+                } else if (SystemAPI.HasComponent<MoveToComponent>(entityToBuild))
+                {
+                    var renderBounds = SystemAPI.GetComponent<WorldRenderBounds>(entityToBuild);
+                    SystemAPI.SetComponent(entityToBuild, new MoveToComponent
+                    {
+                        TargetPosition = new float3(50, renderBounds.Value.Center.y, 50)
+                    });
+                    SystemAPI.SetComponentEnabled<BuildModeTag>(gameState, false);
+                    
+                    Debug.Log("HERE");
+                }
             }
             
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
