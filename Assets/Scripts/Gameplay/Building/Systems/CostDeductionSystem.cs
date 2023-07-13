@@ -6,6 +6,7 @@ using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace RTS.Gameplay.Building
 {
@@ -57,11 +58,12 @@ namespace RTS.Gameplay.Building
             in UnitComponent unit
         )
         {
-            ref var buildingData = ref UnitDatabase.Value.Units[unit.DatabaseIndex];
-
-            for (var i = 0; i < buildingData.Cost.Length; i++)
+            ref var unitData = ref UnitDatabase.Value.Units[unit.DatabaseIndex];
+            Debug.Log("HERE");
+            for (var i = 0; i < unitData.Cost.Length; i++)
             {
-                var resource = buildingData.Cost[i];
+                var resource = unitData.Cost[i];
+                Debug.Log($"Cost {resource.Name} {resource.Value}")
 ;               Ecb.AppendToBuffer(index, owner.Entity, new ResourceBufferElement
                 {
                     Name = resource.Name,
