@@ -11,7 +11,7 @@ using UnityEngine;
 namespace RTS.Gameplay.Building
 {
     [UpdateInGroup(typeof(GameplaySystemGroup))]
-    [UpdateAfter(typeof(BuildingSystem))]
+    [UpdateAfter(typeof(InstantiationSystem))]
     public partial struct CostDeductionSystem : ISystem
     {
         [BurstCompile]
@@ -47,6 +47,7 @@ namespace RTS.Gameplay.Building
     }
 
     [WithAll(typeof(UnitComponent), typeof(EntityCreatedTag))]
+    [BurstCompile]
     public partial struct AddBuildingCostJob : IJobEntity
     {
         public EntityCommandBuffer.ParallelWriter Ecb;
@@ -59,11 +60,9 @@ namespace RTS.Gameplay.Building
         )
         {
             ref var unitData = ref UnitDatabase.Value.Units[unit.DatabaseIndex];
-            Debug.Log("HERE");
             for (var i = 0; i < unitData.Cost.Length; i++)
             {
                 var resource = unitData.Cost[i];
-                Debug.Log($"Cost {resource.Name} {resource.Value}")
 ;               Ecb.AppendToBuffer(index, owner.Entity, new ResourceBufferElement
                 {
                     Name = resource.Name,

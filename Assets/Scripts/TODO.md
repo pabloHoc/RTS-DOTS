@@ -11,3 +11,6 @@
 [x] Blob assets for configs
 [x] Merge units and buildings
 [] Review TransformUsageFlags in authoring
+[] Review ecb and sync points
+[] Review transform syncing
+[] Move GameUI.Instance to component so we can burst methods that access it

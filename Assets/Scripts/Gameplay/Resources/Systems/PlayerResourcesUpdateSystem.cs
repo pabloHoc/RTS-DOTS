@@ -4,11 +4,11 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
-using UnityEngine;
 
 namespace RTS.Gameplay.Resources
 {
     [UpdateInGroup(typeof(GameplaySystemGroup), OrderLast = true)]
+    [BurstCompile]
     public partial struct PlayerResourcesUpdateSystem : ISystem
     {
         private BufferLookup<ResourceBufferElement> _resourceBufferLookup;
@@ -35,7 +35,6 @@ namespace RTS.Gameplay.Resources
 
             
             state.Dependency = job.ScheduleParallel(state.Dependency);
-
         }
 
         [BurstCompile]
@@ -46,7 +45,7 @@ namespace RTS.Gameplay.Resources
     }
     
     [WithAll(typeof(PlayerComponent))]
-    // [BurstCompile]
+    [BurstCompile]
     public partial struct UpdatePlayerResourcesJob : IJobEntity {
 
         public EntityCommandBuffer.ParallelWriter Ecb;

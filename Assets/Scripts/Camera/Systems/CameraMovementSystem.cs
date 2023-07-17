@@ -75,9 +75,9 @@ namespace RTS.Camera
     [BurstCompile]
     public partial struct UpdateCameraRigPositionJob : IJobEntity
     {
-        public CameraMovementSingleton Camera;
-        public CameraSettingsSingleton CameraSettings;
-        public float DeltaTime;
+        [ReadOnly] public CameraMovementSingleton Camera;
+        [ReadOnly] public CameraSettingsSingleton CameraSettings;
+        [ReadOnly] public float DeltaTime;
         public NativeReference<float> HorizontalSpeed;
         public NativeReference<float3> HorizontalDirection;
         
@@ -115,9 +115,9 @@ namespace RTS.Camera
     [BurstCompile]
     public partial struct UpdateCameraPositionJob : IJobEntity
     {
-        public CameraMovementSingleton Camera;
-        public CameraSettingsSingleton CameraSettings;
-        public float DeltaTime;
+        [ReadOnly] public CameraMovementSingleton Camera;
+        [ReadOnly] public CameraSettingsSingleton CameraSettings;
+        [ReadOnly] public float DeltaTime;
         
         public void Execute(ref LocalTransform transform)
         {

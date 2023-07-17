@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using RTS.Authoring.Gameplay.Unit;
 using RTS.Common;
 using RTS.Gameplay.Players.Singletons;
@@ -37,7 +38,7 @@ namespace RTS.Gameplay.Building
             var unitRepository = SystemAPI.GetSingletonEntity<UnitDatabaseSingleton>();
             var unitEntitiesBuffer = SystemAPI.GetBuffer<EntityBufferElement>(unitRepository);
             var unitToBuild = unitEntitiesBuffer[GameUI.Instance.BuildingIndex].Entity;
-                    
+
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
                 _currentBuildingRotation += input.ScrollAmount * 2f;
@@ -74,12 +75,12 @@ namespace RTS.Gameplay.Building
     public partial struct BuildBuildingJob : IJobEntity
     {
         public EntityCommandBuffer.ParallelWriter Ecb;
-        public Entity Player;
-        public Entity Unit;
-        public float3 UnitPosition;
-        public bool BuildUnit;
-        public bool CancelBuilding;
-        public float UnitRotation;
+        [ReadOnly(true)] public Entity Player;
+        [ReadOnly(true)] public Entity Unit;
+        [ReadOnly(true)] public float3 UnitPosition;
+        [ReadOnly(true)] public bool BuildUnit;
+        [ReadOnly(true)] public bool CancelBuilding;
+        [ReadOnly(true)] public float UnitRotation;
 
         [BurstCompile]
         public void Execute(

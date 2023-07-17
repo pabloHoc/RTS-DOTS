@@ -5,6 +5,7 @@ using RTS.SystemGroups;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace RTS.Gameplay.Movement
 {
@@ -24,6 +25,8 @@ namespace RTS.Gameplay.Movement
         public void OnUpdate(ref SystemState state)
         {
             var gameState = SystemAPI.GetSingletonEntity<GameStateSingleton>();
+            var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            var ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
             if (SystemAPI.IsComponentEnabled<BuildModeTag>(gameState))
             {
@@ -34,20 +37,13 @@ namespace RTS.Gameplay.Movement
             
             if (input.IsSecondaryActionPressed)
             {
-                var query = SystemAPI.QueryBuilder().WithAll<SelectedTag, MovableComponent>().Build();
-                var entities = query.ToEntityArray(Allocator.Temp);
-                
-                // Remove moveTo component in currently moving entities
-                state.EntityManager.RemoveComponent<MoveToComponent>(entities);
-                state.EntityManager.AddComponent<MoveToComponent>(entities);
-                
-                foreach (var entity in entities)
+                var job = new SetTargetPositionJob
                 {
-                    SystemAPI.SetComponent(entity, new MoveToComponent
-                    {   
-                       TargetPosition = input.CursorWorldPosition
-                    });
-                }
+                    Ecb = ecb.AsParallelWriter(),
+                    TargetPosition = input.CursorWorldPosition
+                };
+
+                state.Dependency = job.ScheduleParallel(state.Dependency);
             }
         }
 
@@ -55,6 +51,26 @@ namespace RTS.Gameplay.Movement
         public void OnDestroy(ref SystemState state)
         {
 
+        }
+    }
+
+    [WithAll(typeof(SelectedTag), typeof(MovableComponent))]
+    [BurstCompile]
+    public partial struct SetTargetPositionJob : IJobEntity
+    {
+        public EntityCommandBuffer.ParallelWriter Ecb;
+        [ReadOnly] public float3 TargetPosition;
+
+        public void Execute(
+            [ChunkIndexInQuery] int chunkIndex, 
+            Entity entity)
+        {
+            // Remove moveTo component in currently moving entities
+            Ecb.RemoveComponent<MoveToComponent>(chunkIndex, entity);
+            Ecb.AddComponent(chunkIndex, entity, new MoveToComponent
+            {   
+                TargetPosition = TargetPosition
+            });
         }
     }
 }

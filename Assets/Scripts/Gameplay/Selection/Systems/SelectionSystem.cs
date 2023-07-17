@@ -14,7 +14,6 @@ namespace RTS.Gameplay.Selection
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<SelectionSingleton>();
         }
 
